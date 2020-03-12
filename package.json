@@ -1,0 +1,15 @@
+{
+  "name": "todos-node",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "web": "npm start --prefix web",
+    "server": "npm start --prefix server",
+    "dev": "concurrently \"npm run web\" \"npm run server\""
+  },
+  "author": "Wallace Júnior",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^5.1.0"
+  }
+}

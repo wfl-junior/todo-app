@@ -1,0 +1,31 @@
+{
+  "name": "server",
+  "private": true,
+  "version": "0.1.0",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "nodemon --exec ts-node src/index.ts"
+  },
+  "author": "Wallace Júnior",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server-express": "^2.11.0",
+    "class-validator": "^0.11.0",
+    "express": "^4.17.1",
+    "graphql": "^14.6.0",
+    "pg": "^7.18.2",
+    "reflect-metadata": "^0.1.13",
+    "type-graphql": "^0.17.6",
+    "typeorm": "^0.2.24"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.3",
+    "@types/graphql": "^14.5.0",
+    "@types/node": "^13.9.0",
+    "@types/pg": "^7.14.2",
+    "nodemon": "^2.0.2",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.8.3"
+  }
+}
