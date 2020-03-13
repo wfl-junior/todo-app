@@ -5,7 +5,7 @@
   "scripts": {
     "web": "npm start --prefix web",
     "server": "npm start --prefix server",
-    "dev": "concurrently \"npm run web\" \"npm run server\""
+    "start": "concurrently \"npm run server\" \"npm run web\""
   },
   "author": "Wallace Júnior",
   "license": "ISC",

@@ -1,3 +1,4 @@
-import { HelloResolver } from "./HelloResolver";
+import { ListResolver } from "./ListResolver";
+import { TaskResolver } from "./TaskResolver";
 
-export const resolvers = [HelloResolver];
+export const resolvers = [ListResolver, TaskResolver];
