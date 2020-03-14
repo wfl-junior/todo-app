@@ -1,0 +1,74 @@
+@charset 'UTF-8';
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
+
+body {
+  font-family: "Roboto", sans-serif;
+  background: #007bff;
+  background: linear-gradient(to right, #0062e6, #33aeff);
+}
+
+.todos {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.lists {
+  width: 40%;
+
+  .card-header {
+    .card-title {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.tasks {
+  width: 55%;
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    p,
+    .card-title {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.lists,
+.tasks {
+  --margin: 30px;
+  margin-top: var(--margin);
+  margin-bottom: var(--margin);
+}
+
+.btn-primary:hover {
+  background-color: #0069d9 !important;
+}
+
+[disabled] {
+  pointer-events: none;
+}
+
+@media (max-width: 575.98px) {
+  form button {
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .todos {
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .lists,
+  .tasks {
+    width: 100%;
+  }
+}
