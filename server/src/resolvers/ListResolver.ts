@@ -2,12 +2,18 @@ import { Resolver, Query, Mutation, Arg, Int, Args } from "type-graphql";
 import { List } from "../entities/List";
 import { CreateListArgs } from "../types/CreateListArgs";
 import { validateOrReject } from "class-validator";
+import { getRepository } from "typeorm";
 
 @Resolver(List)
 export class ListResolver {
   @Query(() => [List])
   async lists(): Promise<List[]> {
-    return await List.find({ order: { id: "ASC" }, relations: ["tasks"] });
+    return await getRepository(List)
+      .createQueryBuilder("list")
+      .leftJoinAndSelect("list.tasks", "tasks")
+      .orderBy("list.id", "ASC")
+      .addOrderBy("tasks.id", "ASC")
+      .getMany();
   }
 
   @Mutation(() => List)

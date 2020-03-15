@@ -4,6 +4,7 @@ import "./registerIcons";
 import { useListsQuery } from "./graphql";
 import { Loading } from "./components/Loading";
 import { Error } from "./components/Error";
+import { Todos } from "./components/Todos";
 
 export const App: React.FC = () => {
   const { data, loading, error } = useListsQuery();
@@ -14,11 +15,15 @@ export const App: React.FC = () => {
     return <Error msg="An error occurred while fetching data..." />;
   }
 
-  if (!data || !data.lists) {
+  if (!data) {
     return <Error msg="No data returned for some reason..." />;
   }
 
   return (
-    <pre className="text-white">{JSON.stringify(data.lists, null, 2)}</pre>
+    <main>
+      <div className="container">
+        <Todos />
+      </div>
+    </main>
   );
 };

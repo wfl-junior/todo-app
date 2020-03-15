@@ -81,11 +81,11 @@ export type TaskFieldsFragment = { __typename?: "Task" } & Pick<
   "id" | "listId" | "name" | "completed"
 >;
 
-export type CreateListMutationMutationVariables = {
+export type CreateListMutationVariables = {
   name: Scalars["String"];
 };
 
-export type CreateListMutationMutation = { __typename?: "Mutation" } & {
+export type CreateListMutation = { __typename?: "Mutation" } & {
   createList: { __typename?: "List" } & ListFieldsFragment;
 };
 
@@ -151,56 +151,56 @@ export const ListFieldsFragmentDoc = gql`
   }
   ${TaskFieldsFragmentDoc}
 `;
-export const CreateListMutationDocument = gql`
-  mutation CreateListMutation($name: String!) {
+export const CreateListDocument = gql`
+  mutation CreateList($name: String!) {
     createList(name: $name) {
       ...ListFields
     }
   }
   ${ListFieldsFragmentDoc}
 `;
-export type CreateListMutationMutationFn = ApolloReactCommon.MutationFunction<
-  CreateListMutationMutation,
-  CreateListMutationMutationVariables
+export type CreateListMutationFn = ApolloReactCommon.MutationFunction<
+  CreateListMutation,
+  CreateListMutationVariables
 >;
 
 /**
- * __useCreateListMutationMutation__
+ * __useCreateListMutation__
  *
- * To run a mutation, you first call `useCreateListMutationMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateListMutationMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateListMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateListMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createListMutationMutation, { data, loading, error }] = useCreateListMutationMutation({
+ * const [createListMutation, { data, loading, error }] = useCreateListMutation({
  *   variables: {
  *      name: // value for 'name'
  *   },
  * });
  */
-export function useCreateListMutationMutation(
+export function useCreateListMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
-    CreateListMutationMutation,
-    CreateListMutationMutationVariables
+    CreateListMutation,
+    CreateListMutationVariables
   >
 ) {
   return ApolloReactHooks.useMutation<
-    CreateListMutationMutation,
-    CreateListMutationMutationVariables
-  >(CreateListMutationDocument, baseOptions);
+    CreateListMutation,
+    CreateListMutationVariables
+  >(CreateListDocument, baseOptions);
 }
-export type CreateListMutationMutationHookResult = ReturnType<
-  typeof useCreateListMutationMutation
+export type CreateListMutationHookResult = ReturnType<
+  typeof useCreateListMutation
 >;
-export type CreateListMutationMutationResult = ApolloReactCommon.MutationResult<
-  CreateListMutationMutation
+export type CreateListMutationResult = ApolloReactCommon.MutationResult<
+  CreateListMutation
 >;
-export type CreateListMutationMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  CreateListMutationMutation,
-  CreateListMutationMutationVariables
+export type CreateListMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  CreateListMutation,
+  CreateListMutationVariables
 >;
 export const CreateTaskDocument = gql`
   mutation CreateTask($listId: Int!, $name: String!) {

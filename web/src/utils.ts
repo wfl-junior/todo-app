@@ -14,3 +14,18 @@ export const Toast = Swal.mixin({
     toast.addEventListener("mouseleave", Swal.resumeTimer);
   }
 });
+
+export const Confirm = Swal.mixin({
+  title: "Atenção!",
+  icon: "warning",
+  showCancelButton: true,
+  cancelButtonText: "Não",
+  confirmButtonText: "Sim",
+  reverseButtons: true,
+  focusCancel: true,
+  buttonsStyling: false,
+  customClass: {
+    confirmButton: "btn btn-danger mx-2 mt-1",
+    cancelButton: "btn btn-primary mx-2 mt-1"
+  }
+});

@@ -4,6 +4,7 @@ import { CreateTaskArgs } from "../types/CreateTaskArgs";
 import { validateOrReject } from "class-validator";
 import { List } from "../entities/List";
 import { UpdateTaskArgs } from "../types/UpdateTaskArgs";
+import { getRepository } from "typeorm";
 
 @Resolver(Task)
 export class TaskResolver {
@@ -17,11 +18,16 @@ export class TaskResolver {
     await validateOrReject(args);
 
     const task = await Task.create(args).save();
-    const list = await List.findOne({
-      where: { id: task.listId },
-      relations: ["tasks"]
-    });
+    const list = await getRepository(List)
+      .createQueryBuilder("list")
+      .leftJoinAndSelect("list.tasks", "tasks")
+      .orderBy("list.id", "ASC")
+      .addOrderBy("tasks.id", "ASC")
+      .where("list.id = :listId", { listId: task.listId })
+      .getOne();
+
     if (!list) throw new Error("List not found");
+    console.log(list.tasks);
     task.list = list;
 
     return task;

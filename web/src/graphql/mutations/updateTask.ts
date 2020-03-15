@@ -1,5 +1,5 @@
 import { gql } from "apollo-boost";
-import { taskFields } from "../fragments/taskFields";
+import { taskFieldsFragment } from "../fragments/taskFields";
 
 export const updateTaskMutation = gql`
   mutation UpdateTask(
@@ -13,5 +13,5 @@ export const updateTaskMutation = gql`
     }
   }
 
-  ${taskFields}
+  ${taskFieldsFragment}
 `;

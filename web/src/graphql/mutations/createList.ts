@@ -1,12 +1,12 @@
 import { gql } from "apollo-boost";
-import { listFields } from "../fragments/listFields";
+import { listFieldsFragment } from "../fragments/listFields";
 
 export const createListMutation = gql`
-  mutation CreateListMutation($name: String!) {
+  mutation CreateList($name: String!) {
     createList(name: $name) {
       ...ListFields
     }
   }
 
-  ${listFields}
+  ${listFieldsFragment}
 `;
