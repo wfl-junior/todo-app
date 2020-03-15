@@ -8,7 +8,6 @@ import {
 } from "../graphql";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Confirm, Toast } from "../utils";
-import { produce } from "immer";
 
 export const Task: React.FC<TaskFieldsFragment> = ({
   id,
@@ -32,7 +31,7 @@ export const Task: React.FC<TaskFieldsFragment> = ({
         id,
         listId,
         name,
-        completed
+        completed: !completed
       },
       update: cache => {
         const listData = cache.readQuery<ListsQuery>({
@@ -41,9 +40,7 @@ export const Task: React.FC<TaskFieldsFragment> = ({
 
         if (!listData) return;
 
-        const { lists } = listData;
-
-        const targetTask = lists
+        const targetTask = listData.lists
           .find(list => list.id === listId)
           ?.tasks.find(task => task.id === id);
 
@@ -53,13 +50,7 @@ export const Task: React.FC<TaskFieldsFragment> = ({
 
         cache.writeQuery<ListsQuery>({
           query: ListsDocument,
-          data: produce(listData, ({ lists }) => {
-            const targetTask = lists
-              .find(list => list.id === listId)
-              ?.tasks.find(task => task.id === id);
-
-            targetTask!.completed = !targetTask!.completed;
-          })
+          data: { ...listData, lists: listData.lists }
         });
       }
     });
@@ -67,24 +58,19 @@ export const Task: React.FC<TaskFieldsFragment> = ({
 
   const deleteTask = async () => {
     const decision = await Confirm.fire({
-      text: "Deseja mesmo apagar esta tarefa?"
+      html:
+        "Deseja mesmo apagar esta tarefa? <br /> Esta ação não pode ser revertida."
     });
 
     if (decision.value)
       await deleteTasks({
         variables: { ids: [id] },
-        update: (cache, res) => {
+        update: cache => {
           const listData = cache.readQuery<ListsQuery>({
             query: ListsDocument
           });
 
-          if (!listData || !res.data) {
-            Toast.fire({
-              title: "No data returned for some reason...",
-              icon: "error"
-            });
-            return;
-          }
+          if (!listData) return;
 
           const { lists } = listData;
 
@@ -96,7 +82,12 @@ export const Task: React.FC<TaskFieldsFragment> = ({
 
           cache.writeQuery<ListsQuery>({
             query: ListsDocument,
-            data: { lists }
+            data: { ...listData, lists }
+          });
+
+          Toast.fire({
+            title: "Tarefa deletada!",
+            icon: "success"
           });
         }
       });

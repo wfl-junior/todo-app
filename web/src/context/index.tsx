@@ -10,7 +10,7 @@ interface Context {
 
 export const ActiveListContext = createContext<Context>({} as Context);
 
-export const ActiveListProvider: React.FC = props => {
+export const ActiveListProvider: React.FC = ({ children }) => {
   const [activeList, dispatch] = useReducer(activeListReducer, null);
 
   const setActiveList = (list: ListFieldsFragment) => {
@@ -22,7 +22,7 @@ export const ActiveListProvider: React.FC = props => {
 
   return (
     <ActiveListContext.Provider value={{ activeList, setActiveList }}>
-      {props.children}
+      {children}
     </ActiveListContext.Provider>
   );
 };

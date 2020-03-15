@@ -41,6 +41,11 @@ export const Lists = () => {
 
         setActiveList(res.data.createList);
         document.getElementById("add-task")?.focus();
+
+        Toast.fire({
+          title: "Lista criada!",
+          icon: "success"
+        });
       }
     });
   };

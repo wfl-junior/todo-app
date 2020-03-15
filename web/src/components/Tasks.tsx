@@ -22,10 +22,12 @@ export const Tasks = () => {
   const [createTask] = useCreateTaskMutation();
   const [deleteTasks] = useDeleteTasksMutation();
 
+  if (!activeList) return null;
+
   const deleteList = async (id: number) => {
     const decision = await Confirm.fire({
-      text:
-        "Deseja mesmo apagar esta lista e todas as suas tarefas? Esta ação não pode ser revertida."
+      html:
+        "Deseja mesmo apagar esta lista e todas as suas tarefas? <br /> Esta ação não pode ser revertida."
     });
 
     if (decision.value) {
@@ -40,10 +42,18 @@ export const Tasks = () => {
 
           cache.writeQuery<ListsQuery>({
             query: ListsDocument,
-            data: { lists: listData.lists.filter(list => list.id !== id) }
+            data: {
+              ...listData,
+              lists: listData.lists.filter(list => list.id !== id)
+            }
           });
 
           setActiveList(data!.lists[0]);
+
+          Toast.fire({
+            title: "Lista deletada!",
+            icon: "success"
+          });
         }
       });
     }
@@ -73,33 +83,54 @@ export const Tasks = () => {
           query: ListsDocument,
           data: { ...listData, lists: listData.lists }
         });
+
+        Toast.fire({
+          title: "Tarefa criada!",
+          icon: "success"
+        });
       }
     });
   };
 
   const clearCompleted = async () => {
     const decision = await Confirm.fire({
-      text:
-        "Deseja mesmo apagar as tarefas completas desta lista? Esta ação não pode ser revertida."
+      html:
+        "Deseja mesmo apagar as tarefas completas desta lista? <br /> Esta ação não pode ser revertida."
     });
 
-    const targetTasks = activeList!.tasks.filter(task => task.completed);
+    const targetTasks = activeList.tasks.filter(task => task.completed);
 
     if (decision.value) {
       await deleteTasks({
-        variables: {
-          ids: targetTasks.map(task => task.id)
-        }
-      });
+        variables: { ids: targetTasks.map(task => task.id) },
+        update: cache => {
+          const listData = cache.readQuery<ListsQuery>({
+            query: ListsDocument
+          });
 
-      Toast.fire({
-        title: "Tarefas deletadas!",
-        icon: "success"
+          if (!listData) return;
+
+          const targetList = listData.lists.find(
+            list => list.id === activeList.id
+          );
+
+          if (!targetList) return;
+
+          targetList.tasks = targetList.tasks.filter(task => !task.completed);
+
+          cache.writeQuery<ListsQuery>({
+            query: ListsDocument,
+            data: { ...listData, lists: listData.lists }
+          });
+
+          Toast.fire({
+            title: "Tarefas deletadas!",
+            icon: "success"
+          });
+        }
       });
     }
   };
-
-  if (!activeList) return null;
 
   return (
     <div className="card tasks">
@@ -144,7 +175,6 @@ export const Tasks = () => {
             type="button"
             className="btn btn-danger"
             onClick={() => clearCompleted()}
-            disabled={!activeList.tasks}
           >
             <FontAwesomeIcon icon="trash" /> Limpar completas
           </button>
@@ -152,7 +182,6 @@ export const Tasks = () => {
             type="button"
             className="btn btn-danger"
             onClick={() => deleteList(activeList.id)}
-            disabled={!activeList.tasks}
           >
             Deletar Lista <FontAwesomeIcon icon="trash" />
           </button>
