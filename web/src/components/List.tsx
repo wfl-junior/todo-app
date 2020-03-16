@@ -28,9 +28,7 @@ export const List: React.FC<ListProps> = ({ id, name, tasksLength }) => {
     >
       <div style={{ marginRight: 16 }}>{name}</div>
       <span
-        className={`bagde badge-${
-          activeList.id === id ? "light" : "primary"
-        } badge-pill`}
+        className={`bagde badge-${activeList.id === id ? "light" : "primary"} badge-pill`}
       >
         {tasksLength}
       </span>

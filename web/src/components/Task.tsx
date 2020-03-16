@@ -6,12 +6,7 @@ import { TaskFieldsFragment } from "../graphql";
 import { client } from "../graphql/client";
 import { DangerButton } from "./DangerButton";
 
-export const Task: React.FC<TaskFieldsFragment> = ({
-  id,
-  listId,
-  name,
-  completed
-}) => {
+export const Task: React.FC<TaskFieldsFragment> = ({ id, listId, name, completed }) => {
   const { toggleCompleted, deleteTask } = useContext(TodosContext);
 
   const labelStyle: React.CSSProperties = {
@@ -43,8 +38,7 @@ export const Task: React.FC<TaskFieldsFragment> = ({
 
   const handleDeleteTask = async () => {
     const decision = await Confirm.fire({
-      html:
-        "Deseja mesmo apagar esta tarefa? <br /> Esta ação não pode ser revertida."
+      html: "Deseja mesmo apagar esta tarefa? <br /> Esta ação não pode ser revertida."
     });
 
     if (decision.value) {
@@ -59,7 +53,7 @@ export const Task: React.FC<TaskFieldsFragment> = ({
             icon: "success"
           });
         } else {
-          throw new Error("Backend Error");
+          throw new Error("Ocorreu um erro inesperado.");
         }
       } catch (err) {
         console.log(err);
@@ -82,11 +76,7 @@ export const Task: React.FC<TaskFieldsFragment> = ({
           checked={completed}
           onChange={handleCompleted}
         />
-        <label
-          className="custom-control-label"
-          htmlFor={`${id}`}
-          style={labelStyle}
-        >
+        <label className="custom-control-label" htmlFor={`${id}`} style={labelStyle}>
           {name}
         </label>
       </div>

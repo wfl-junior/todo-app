@@ -9,9 +9,7 @@ import { TaskFieldsFragment } from "../graphql";
 import { DangerButton } from "./DangerButton";
 
 export const Tasks = () => {
-  const { activeList, deleteList, addTask, clearCompleted } = useContext(
-    TodosContext
-  );
+  const { activeList, deleteList, addTask, clearCompleted } = useContext(TodosContext);
 
   if (!activeList) return null;
 
@@ -33,7 +31,7 @@ export const Tasks = () => {
             icon: "success"
           });
         } else {
-          throw new Error("Backend Error");
+          throw new Error("Ocorreu um erro inesperado.");
         }
       } catch (err) {
         console.log(err);
@@ -46,9 +44,7 @@ export const Tasks = () => {
     }
   };
 
-  const handleAddTask = async (
-    task: Pick<TaskFieldsFragment, "listId" | "name">
-  ) => {
+  const handleAddTask = async (task: Pick<TaskFieldsFragment, "listId" | "name">) => {
     if (!task.name.length) return;
 
     try {
@@ -77,10 +73,10 @@ export const Tasks = () => {
     });
 
     if (decision.value) {
+      const targetTasks = activeList.tasks.filter(task => task.completed);
       clearCompleted(activeList.id);
 
       try {
-        const targetTasks = activeList.tasks.filter(task => task.completed);
         const { deleteTasks } = await client.DeleteTasks({
           ids: targetTasks.map(task => task.id)
         });
@@ -91,7 +87,7 @@ export const Tasks = () => {
             icon: "success"
           });
         } else {
-          throw new Error("Backend Error");
+          throw new Error("Ocorreu um erro inesperado.");
         }
       } catch (err) {
         console.log(err);

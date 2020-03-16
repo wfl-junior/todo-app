@@ -1,9 +1,6 @@
 import { GlobalState, Action } from "../types/todos";
 
-export const activeListReducer: React.Reducer<GlobalState, Action> = (
-  state,
-  action
-) => {
+export const activeListReducer: React.Reducer<GlobalState, Action> = (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -59,9 +56,7 @@ export const activeListReducer: React.Reducer<GlobalState, Action> = (
     case "DELETE_TASK": {
       const lists = [...state.lists];
       const targetList = lists.find(list => list.id === payload.listId);
-      targetList!.tasks = targetList!.tasks.filter(
-        task => task.id !== payload.taskId
-      );
+      targetList!.tasks = targetList!.tasks.filter(task => task.id !== payload.taskId);
 
       return {
         ...state,
