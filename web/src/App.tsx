@@ -1,29 +1,59 @@
 import React from "react";
 import "./style.scss";
 import "./registerIcons";
-import { useListsQuery } from "./graphql";
 import { Loading } from "./components/Loading";
 import { Error } from "./components/Error";
-import { Todos } from "./components/Todos";
+import { Lists } from "./components/Lists";
+import { Tasks } from "./components/Tasks";
+import { TodosContext } from "./context";
+import { client } from "./graphql/client";
 
-export const App: React.FC = () => {
-  const { data, loading, error } = useListsQuery();
+interface State {
+  loading: boolean;
+  error: any;
+}
 
-  if (loading) return <Loading />;
+export class App extends React.Component<{}, State> {
+  static contextType = TodosContext;
+  context!: React.ContextType<typeof TodosContext>;
 
-  if (error) {
-    return <Error msg="An error occurred while fetching data..." />;
+  state = {
+    loading: true,
+    error: null
+  };
+
+  async componentDidMount() {
+    try {
+      const { lists } = await client.Lists();
+
+      this.context.setLists(lists);
+      this.context.setActiveList(lists[0]);
+    } catch (err) {
+      console.log(err);
+      this.setState({ error: err });
+    } finally {
+      this.setState({ loading: false });
+    }
   }
 
-  if (!data) {
-    return <Error msg="No data returned for some reason..." />;
-  }
+  render() {
+    const { loading, error } = this.state;
 
-  return (
-    <main>
-      <div className="container">
-        <Todos />
-      </div>
-    </main>
-  );
-};
+    if (loading) return <Loading />;
+
+    if (error) {
+      return <Error msg="An error occurred while fetching data..." />;
+    }
+
+    return (
+      <main>
+        <div className="container">
+          <section className="todos">
+            <Lists />
+            <Tasks />
+          </section>
+        </div>
+      </main>
+    );
+  }
+}

@@ -1,53 +1,37 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { List } from "./List";
 import { Form } from "./Form";
-import { capitalize, Toast } from "../utils";
-import {
-  useListsQuery,
-  useCreateListMutation,
-  ListFieldsFragment,
-  ListsQuery,
-  ListsDocument
-} from "../graphql";
+import { Toast } from "../utils";
+import { ListFieldsFragment } from "../graphql";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ActiveListContext } from "../context";
+import { TodosContext } from "../context";
+import { client } from "../graphql/client";
 
 export const Lists = () => {
-  const [value, setValue] = useState("");
-  const { data } = useListsQuery();
-  const [createList] = useCreateListMutation();
-  const { setActiveList } = useContext(ActiveListContext);
+  const { lists, addList } = useContext(TodosContext);
 
-  const addList = async (name: ListFieldsFragment["name"]) => {
+  const handleAddList = async (name: ListFieldsFragment["name"]) => {
     if (!name.length) return;
 
-    await createList({
-      variables: { name },
-      update: (cache, res) => {
-        const listData = cache.readQuery<ListsQuery>({ query: ListsDocument });
+    try {
+      const { createList } = await client.CreateList({ name });
 
-        if (!listData || !res.data) {
-          Toast.fire({
-            title: "No data returned for some reason...",
-            icon: "error"
-          });
-          return;
-        }
+      addList(createList);
 
-        cache.writeQuery<ListsQuery>({
-          query: ListsDocument,
-          data: { ...listData, lists: [...listData.lists, res.data.createList] }
-        });
+      document.getElementById("add-task")?.focus();
 
-        setActiveList(res.data.createList);
-        document.getElementById("add-task")?.focus();
+      Toast.fire({
+        title: "Lista criada!",
+        icon: "success"
+      });
+    } catch (err) {
+      console.log(err);
 
-        Toast.fire({
-          title: "Lista criada!",
-          icon: "success"
-        });
-      }
-    });
+      Toast.fire({
+        title: "Ocorreu um erro ao criar a lista...",
+        icon: "error"
+      });
+    }
   };
 
   return (
@@ -62,18 +46,13 @@ export const Lists = () => {
       </div>
       <div className="card-body">
         <Form
-          onSubmit={e => {
-            e.preventDefault();
-            addList(value);
-            setValue("");
-          }}
+          onSubmit={async value => await handleAddList(value)}
           placeholder="Adicionar Lista..."
-          value={value}
-          onChange={e => setValue(capitalize(e.target.value))}
           id="add-list"
+          aria-label="Add a list"
         />
         <ul className="list-group">
-          {data!.lists.map(({ id, name, tasks }) => (
+          {lists.map(({ id, name, tasks }) => (
             <List key={id} id={id} name={name} tasksLength={tasks.length} />
           ))}
         </ul>

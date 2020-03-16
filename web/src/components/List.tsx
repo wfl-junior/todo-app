@@ -1,20 +1,13 @@
 import React, { useContext } from "react";
-import { ActiveListContext } from "../context";
-import { ListFieldsFragment, useListsQuery } from "../graphql";
+import { TodosContext } from "../context";
+import { ListFieldsFragment } from "../graphql";
 
 type ListProps = {
   tasksLength: number;
 } & Pick<ListFieldsFragment, "id" | "name">;
 
 export const List: React.FC<ListProps> = ({ id, name, tasksLength }) => {
-  const { data } = useListsQuery();
-  const { activeList, setActiveList } = useContext(ActiveListContext);
-
-  const updateActiveList = (id: number) => {
-    const list = data!.lists.find(list => list.id === id);
-    setActiveList(list!);
-    document.getElementById("add-task")?.focus();
-  };
+  const { lists, activeList, setActiveList } = useContext(TodosContext);
 
   if (!activeList) return null;
 
@@ -27,7 +20,11 @@ export const List: React.FC<ListProps> = ({ id, name, tasksLength }) => {
     <li
       className={className}
       style={{ cursor: "pointer" }}
-      onClick={() => updateActiveList(id)}
+      onClick={() => {
+        const targetList = lists.find(list => list.id === id);
+        setActiveList(targetList!);
+        document.getElementById("add-task")?.focus();
+      }}
     >
       <div style={{ marginRight: 16 }}>{name}</div>
       <span

@@ -1,13 +1,10 @@
-import React from "react";
-import {
-  TaskFieldsFragment,
-  useDeleteTasksMutation,
-  useUpdateTaskMutation,
-  ListsQuery,
-  ListsDocument
-} from "../graphql";
+import React, { useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Confirm, Toast } from "../utils";
+import { TodosContext } from "../context";
+import { TaskFieldsFragment } from "../graphql";
+import { client } from "../graphql/client";
+import { DangerButton } from "./DangerButton";
 
 export const Task: React.FC<TaskFieldsFragment> = ({
   id,
@@ -15,8 +12,7 @@ export const Task: React.FC<TaskFieldsFragment> = ({
   name,
   completed
 }) => {
-  const [updateTask] = useUpdateTaskMutation();
-  const [deleteTasks] = useDeleteTasksMutation();
+  const { toggleCompleted, deleteTask } = useContext(TodosContext);
 
   const labelStyle: React.CSSProperties = {
     cursor: "pointer",
@@ -26,71 +22,54 @@ export const Task: React.FC<TaskFieldsFragment> = ({
   if (completed) labelStyle.textDecoration = "line-through";
 
   const handleCompleted = async () => {
-    await updateTask({
-      variables: {
+    toggleCompleted(listId, id);
+
+    try {
+      await client.UpdateTask({
         id,
         listId,
         name,
         completed: !completed
-      },
-      update: cache => {
-        const listData = cache.readQuery<ListsQuery>({
-          query: ListsDocument
-        });
+      });
+    } catch (err) {
+      console.log(err);
 
-        if (!listData) return;
-
-        const targetTask = listData.lists
-          .find(list => list.id === listId)
-          ?.tasks.find(task => task.id === id);
-
-        if (!targetTask) return;
-
-        targetTask.completed = !targetTask.completed;
-
-        cache.writeQuery<ListsQuery>({
-          query: ListsDocument,
-          data: { ...listData, lists: listData.lists }
-        });
-      }
-    });
+      Toast.fire({
+        title: "Ocorreu um erro ao atualizar a tarefa...",
+        icon: "error"
+      });
+    }
   };
 
-  const deleteTask = async () => {
+  const handleDeleteTask = async () => {
     const decision = await Confirm.fire({
       html:
         "Deseja mesmo apagar esta tarefa? <br /> Esta ação não pode ser revertida."
     });
 
-    if (decision.value)
-      await deleteTasks({
-        variables: { ids: [id] },
-        update: cache => {
-          const listData = cache.readQuery<ListsQuery>({
-            query: ListsDocument
-          });
+    if (decision.value) {
+      deleteTask(listId, id);
 
-          if (!listData) return;
+      try {
+        const { deleteTasks } = await client.DeleteTasks({ ids: [id] });
 
-          const { lists } = listData;
-
-          const targetList = lists.find(list => list.id === listId);
-
-          if (!targetList) return;
-
-          targetList.tasks = targetList.tasks.filter(task => task.id !== id);
-
-          cache.writeQuery<ListsQuery>({
-            query: ListsDocument,
-            data: { ...listData, lists }
-          });
-
+        if (deleteTasks) {
           Toast.fire({
             title: "Tarefa deletada!",
             icon: "success"
           });
+        } else {
+          throw new Error("Backend Error");
         }
-      });
+      } catch (err) {
+        console.log(err);
+
+        Toast.fire({
+          title: "Ocorreu um erro ao deletar a tarefa...",
+          icon: "error"
+        });
+      }
+    }
   };
 
   return (
@@ -111,9 +90,9 @@ export const Task: React.FC<TaskFieldsFragment> = ({
           {name}
         </label>
       </div>
-      <button className="btn btn-danger" onClick={deleteTask}>
+      <DangerButton onClick={handleDeleteTask}>
         <FontAwesomeIcon icon="trash" />
-      </button>
+      </DangerButton>
     </li>
   );
 };

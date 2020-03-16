@@ -27,7 +27,6 @@ export class TaskResolver {
       .getOne();
 
     if (!list) throw new Error("List not found");
-    console.log(list.tasks);
     task.list = list;
 
     return task;

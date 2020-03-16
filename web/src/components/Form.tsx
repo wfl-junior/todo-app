@@ -1,34 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
+import { capitalize } from "../utils";
 
 interface FormProps {
-  disabled?: boolean;
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  onSubmit: (value: string) => Promise<void>;
   placeholder: string;
-  value: string;
   id: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  ["aria-label"]?: string;
 }
 
-export const Form: React.FC<FormProps> = ({
-  onSubmit,
-  disabled = false,
-  ...props
-}) => {
+export const Form: React.FC<FormProps> = ({ onSubmit, ...props }) => {
+  const [submitting, setSubmitting] = useState(false);
+  const [value, setValue] = useState("");
+
   return (
-    <form onSubmit={onSubmit}>
+    <form
+      onSubmit={async e => {
+        e.preventDefault();
+        setSubmitting(true);
+        await onSubmit(value);
+        setSubmitting(false);
+        setValue("");
+      }}
+    >
       <div className="form-group">
         <div className="form-inline">
           <input
             type="text"
             className="form-control"
-            aria-label="Add Task"
             style={{ flexGrow: 1, marginRight: 16 }}
             autoComplete="off"
+            value={value}
+            onChange={e => setValue(capitalize(e.target.value))}
+            disabled={submitting}
             {...props}
-            disabled={disabled}
           />
-          <button type="submit" className="btn btn-primary" disabled={disabled}>
-            Enviar
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={submitting}
+          >
+            {submitting ? (
+              <>
+                Enviando...{" "}
+                <span
+                  className="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+              </>
+            ) : (
+              "Enviar"
+            )}
           </button>
         </div>
       </div>

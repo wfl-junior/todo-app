@@ -1,4 +1,4 @@
-import { gql } from "apollo-boost";
+import gql from "graphql-tag";
 import { taskFieldsFragment } from "./taskFields";
 
 export const listFieldsFragment = gql`
