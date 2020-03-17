@@ -1,4 +1,6 @@
-const locale = {
+import { Locale, LocaleKey } from "./types/locale";
+
+const locale: Locale = {
   "en-us": {
     errorDefault: "An unexpected error has occurred...",
     errorFetch: "An error occurred while fetching data...",
@@ -24,7 +26,7 @@ const locale = {
     swalAddTaskError: "An error occurred while adding the task...",
     swalClearCompletedEmpty: "No completed task to delete!",
     swalClearCompletedConfirm:
-      "Are you sure you want to delete this list's completed tasks? This action cannot be reversed.",
+      "Are you sure you want to delete this list's completed tasks? <br /> This action cannot be reversed.",
     swalClearCompletedSuccess: "Completed tasks deleted!",
     swalClearCompletedError: "An error occurred while deleting the completed tasks...",
     swalUpdateTaskError: "An error occurred while updating the task...",
@@ -69,7 +71,7 @@ const locale = {
   }
 };
 
-const getCurrentLocale = () => {
+const getCurrentLocale = (): LocaleKey => {
   let currentLocale = localStorage.getItem("locale");
   const supportedLocales = Object.keys(locale);
 
@@ -81,7 +83,7 @@ const getCurrentLocale = () => {
     currentLocale = navigatorLocale;
   }
 
-  return currentLocale as keyof typeof locale;
+  return currentLocale as LocaleKey;
 };
 
 export const currentLocale = locale[getCurrentLocale()];
