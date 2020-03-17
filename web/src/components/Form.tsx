@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { capitalize } from "../utils";
+import { currentLocale } from "../locale";
 
 interface FormProps {
   onSubmit: (value: string) => Promise<void>;
   placeholder: string;
   id: string;
-  ["aria-label"]?: string;
+  "aria-label"?: string;
 }
 
 export const Form: React.FC<FormProps> = ({ onSubmit, ...props }) => {
@@ -34,14 +35,10 @@ export const Form: React.FC<FormProps> = ({ onSubmit, ...props }) => {
             disabled={submitting}
             {...props}
           />
-          <button
-            type="submit"
-            className="btn btn-primary"
-            disabled={submitting}
-          >
+          <button type="submit" className="btn btn-primary" disabled={submitting}>
             {submitting ? (
               <>
-                Enviando...{" "}
+                {currentLocale.formButtonSubmitting}{" "}
                 <span
                   className="spinner-border spinner-border-sm"
                   role="status"
@@ -49,7 +46,7 @@ export const Form: React.FC<FormProps> = ({ onSubmit, ...props }) => {
                 ></span>
               </>
             ) : (
-              "Enviar"
+              currentLocale.formButton
             )}
           </button>
         </div>

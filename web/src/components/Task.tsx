@@ -5,6 +5,7 @@ import { TodosContext } from "../context";
 import { TaskFieldsFragment } from "../graphql";
 import { client } from "../graphql/client";
 import { DangerButton } from "./DangerButton";
+import { currentLocale } from "../locale";
 
 export const Task: React.FC<TaskFieldsFragment> = ({ id, listId, name, completed }) => {
   const { toggleCompleted, deleteTask } = useContext(TodosContext);
@@ -30,7 +31,7 @@ export const Task: React.FC<TaskFieldsFragment> = ({ id, listId, name, completed
       console.log(err);
 
       Toast.fire({
-        title: "Ocorreu um erro ao atualizar a tarefa...",
+        title: currentLocale.swalUpdateTaskError,
         icon: "error"
       });
     }
@@ -38,7 +39,7 @@ export const Task: React.FC<TaskFieldsFragment> = ({ id, listId, name, completed
 
   const handleDeleteTask = async () => {
     const decision = await Confirm.fire({
-      html: "Deseja mesmo apagar esta tarefa? <br /> Esta ação não pode ser revertida."
+      html: currentLocale.swalDeleteTaskConfirm
     });
 
     if (decision.value) {
@@ -49,17 +50,17 @@ export const Task: React.FC<TaskFieldsFragment> = ({ id, listId, name, completed
 
         if (deleteTasks) {
           Toast.fire({
-            title: "Tarefa deletada!",
+            title: currentLocale.swalDeleteTaskSuccess,
             icon: "success"
           });
         } else {
-          throw new Error("Ocorreu um erro inesperado.");
+          throw new Error(currentLocale.errorDefault);
         }
       } catch (err) {
         console.log(err);
 
         Toast.fire({
-          title: "Ocorreu um erro ao deletar a tarefa...",
+          title: currentLocale.swalDeleteTaskError,
           icon: "error"
         });
       }

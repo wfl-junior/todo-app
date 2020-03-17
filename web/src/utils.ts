@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+import { currentLocale } from "./locale";
 
 export const capitalize = (str: string) =>
   str.length > 0 ? str[0].toUpperCase() + str.slice(1) : "";
@@ -16,11 +17,11 @@ export const Toast = Swal.mixin({
 });
 
 export const Confirm = Swal.mixin({
-  title: "Atenção!",
+  title: currentLocale.swalConfirmTitle,
   icon: "warning",
   showCancelButton: true,
-  cancelButtonText: "Não",
-  confirmButtonText: "Sim",
+  cancelButtonText: currentLocale.swalConfirmNoButton,
+  confirmButtonText: currentLocale.swalConfirmYesButton,
   reverseButtons: true,
   focusCancel: true,
   buttonsStyling: false,

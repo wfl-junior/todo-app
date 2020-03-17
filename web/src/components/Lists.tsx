@@ -6,6 +6,7 @@ import { ListFieldsFragment } from "../graphql";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TodosContext } from "../context";
 import { client } from "../graphql/client";
+import { currentLocale } from "../locale";
 
 export const Lists = () => {
   const { lists, addList } = useContext(TodosContext);
@@ -21,14 +22,14 @@ export const Lists = () => {
       document.getElementById("add-task")?.focus();
 
       Toast.fire({
-        title: "Lista criada!",
+        title: currentLocale.swalAddListSuccess,
         icon: "success"
       });
     } catch (err) {
       console.log(err);
 
       Toast.fire({
-        title: "Ocorreu um erro ao criar a lista...",
+        title: currentLocale.swalAddListError,
         icon: "error"
       });
     }
@@ -38,7 +39,7 @@ export const Lists = () => {
     <div className="card lists">
       <div className="card-header">
         <h2 className="card-title">
-          Listas{" "}
+          {currentLocale.listsCardTitle}{" "}
           <small>
             <FontAwesomeIcon icon="list-ul" />
           </small>
@@ -47,9 +48,9 @@ export const Lists = () => {
       <div className="card-body">
         <Form
           onSubmit={async value => await handleAddList(value)}
-          placeholder="Adicionar Lista..."
+          placeholder={currentLocale.listsInputPlaceholder}
           id="add-list"
-          aria-label="Add a list"
+          aria-label={currentLocale.listsInputPlaceholder.replace("...", "")}
         />
         <ul className="list-group">
           {lists.map(({ id, name, tasks }) => (

@@ -7,6 +7,7 @@ import { Lists } from "./components/Lists";
 import { Tasks } from "./components/Tasks";
 import { TodosContext } from "./context";
 import { client } from "./graphql/client";
+import { currentLocale } from "./locale";
 
 interface State {
   loading: boolean;
@@ -41,9 +42,7 @@ export class App extends React.Component<{}, State> {
 
     if (loading) return <Loading />;
 
-    if (error) {
-      return <Error msg="An error occurred while fetching data..." />;
-    }
+    if (error) return <Error msg={currentLocale.errorFetch} />;
 
     return (
       <main>

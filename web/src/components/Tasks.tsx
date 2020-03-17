@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { client } from "../graphql/client";
 import { TaskFieldsFragment } from "../graphql";
 import { DangerButton } from "./DangerButton";
+import { currentLocale } from "../locale";
 
 export const Tasks = () => {
   const { activeList, deleteList, addTask, clearCompleted } = useContext(TodosContext);
@@ -15,8 +16,7 @@ export const Tasks = () => {
 
   const handleDeleteList = async (id: number) => {
     const decision = await Confirm.fire({
-      html:
-        "Deseja mesmo apagar esta lista e todas as suas tarefas? <br /> Esta ação não pode ser revertida."
+      html: currentLocale.swalDeleteListConfirm
     });
 
     if (decision.value) {
@@ -27,17 +27,17 @@ export const Tasks = () => {
 
         if (deleteLists) {
           Toast.fire({
-            title: "Lista deletada!",
+            title: currentLocale.swalDeleteListSuccess,
             icon: "success"
           });
         } else {
-          throw new Error("Ocorreu um erro inesperado.");
+          throw new Error(currentLocale.errorDefault);
         }
       } catch (err) {
         console.log(err);
 
         Toast.fire({
-          title: "Ocorreu um erro ao deletar a lista...",
+          title: currentLocale.swalDeleteListError,
           icon: "error"
         });
       }
@@ -53,27 +53,34 @@ export const Tasks = () => {
       addTask(createTask);
 
       Toast.fire({
-        title: "Tarefa criada!",
+        title: currentLocale.swalAddTaskSuccess,
         icon: "success"
       });
     } catch (err) {
       console.log(err);
 
       Toast.fire({
-        title: "Ocorreu um erro ao criar a tarefa...",
+        title: currentLocale.swalAddTaskSuccess,
         icon: "error"
       });
     }
   };
 
   const handleClearCompleted = async () => {
+    const targetTasks = activeList.tasks.filter(task => task.completed);
+    if (!targetTasks.length) {
+      Toast.fire({
+        title: currentLocale.swalClearCompletedEmpty,
+        icon: "info"
+      });
+      return;
+    }
+
     const decision = await Confirm.fire({
-      html:
-        "Deseja mesmo apagar as tarefas completas desta lista? <br /> Esta ação não pode ser revertida."
+      html: currentLocale.swalClearCompletedConfirm
     });
 
     if (decision.value) {
-      const targetTasks = activeList.tasks.filter(task => task.completed);
       clearCompleted(activeList.id);
 
       try {
@@ -83,17 +90,17 @@ export const Tasks = () => {
 
         if (deleteTasks) {
           Toast.fire({
-            title: "Tarefas completas deletadas!",
+            title: currentLocale.swalClearCompletedSuccess,
             icon: "success"
           });
         } else {
-          throw new Error("Ocorreu um erro inesperado.");
+          throw new Error(currentLocale.errorDefault);
         }
       } catch (err) {
         console.log(err);
 
         Toast.fire({
-          title: "Ocorreu um erro ao deletar as tarefas...",
+          title: currentLocale.swalClearCompletedError,
           icon: "error"
         });
       }
@@ -104,14 +111,19 @@ export const Tasks = () => {
     <div className="card tasks">
       <div className="card-header">
         <h2 className="card-title">
-          Tarefas{" "}
+          {currentLocale.tasksCardTitle}{" "}
           <small>
             <FontAwesomeIcon icon="tasks" />
           </small>
         </h2>
         <p>
-          {activeList.tasks.filter(task => task.completed).length} de{" "}
-          {activeList.tasks.length} completas
+          {currentLocale.ammountTasksCompleted.replace(/\$[0-9]/g, g => {
+            const replacers = {
+              $1: activeList.tasks.filter(task => task.completed).length.toString(),
+              $2: activeList.tasks.length.toString()
+            };
+            return replacers[g];
+          })}
         </p>
       </div>
       <div className="card-body">
@@ -122,9 +134,9 @@ export const Tasks = () => {
               document.getElementById("add-task")?.focus();
             }, 0);
           }}
-          placeholder="Adicionar Tarefa..."
+          placeholder={currentLocale.tasksInputPlaceholder}
           id="add-task"
-          aria-label="Add a task"
+          aria-label={currentLocale.tasksInputPlaceholder.replace("...", "")}
         />
         <ul className="list-group">
           {activeList.tasks.map(({ id, ...rest }) => (
@@ -133,10 +145,10 @@ export const Tasks = () => {
         </ul>
         <div className="d-flex justify-content-around text-align-center mt-3">
           <DangerButton onClick={handleClearCompleted}>
-            <FontAwesomeIcon icon="trash" /> Limpar completas
+            <FontAwesomeIcon icon="trash" /> {currentLocale.clearCompletedButton}
           </DangerButton>
           <DangerButton onClick={() => handleDeleteList(activeList.id)}>
-            Deletar Lista <FontAwesomeIcon icon="trash" />
+            {currentLocale.deleteListButton} <FontAwesomeIcon icon="trash" />
           </DangerButton>
         </div>
       </div>
