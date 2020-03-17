@@ -7,15 +7,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { client } from "../graphql/client";
 import { TaskFieldsFragment } from "../graphql";
 import { DangerButton } from "./DangerButton";
-import { currentLocale } from "../locale";
+import { locale, getCurrentLocale } from "../locale";
 
 export const Tasks = () => {
   const { activeList, deleteList, addTask, clearCompleted } = useContext(TodosContext);
 
   if (!activeList) return null;
 
+  const currentLocale = locale[getCurrentLocale()];
+
   const handleDeleteList = async (id: number) => {
-    const decision = await Confirm.fire({
+    const decision = await Confirm(currentLocale).fire({
       html: currentLocale.swalDeleteListConfirm
     });
 
@@ -76,7 +78,7 @@ export const Tasks = () => {
       return;
     }
 
-    const decision = await Confirm.fire({
+    const decision = await Confirm(currentLocale).fire({
       html: currentLocale.swalClearCompletedConfirm
     });
 

@@ -1,6 +1,6 @@
 import React, { useReducer, createContext } from "react";
 import { activeListReducer } from "./reducer";
-import { GlobalState } from "../types/todos";
+import { GlobalState } from "./types";
 import { ListFieldsFragment, TaskFieldsFragment } from "../graphql";
 
 export interface Context extends GlobalState {

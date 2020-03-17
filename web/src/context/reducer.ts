@@ -1,4 +1,4 @@
-import { GlobalState, Action } from "../types/todos";
+import { GlobalState, Action } from "./types";
 
 export const activeListReducer: React.Reducer<GlobalState, Action> = (state, action) => {
   const { type, payload } = action;

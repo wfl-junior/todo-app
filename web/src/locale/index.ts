@@ -1,6 +1,6 @@
-import { Locale, LocaleKey } from "./types/locale";
+import { Locale, LocaleKey } from "./types";
 
-const locale: Locale = {
+export const locale: Locale = {
   "en-us": {
     errorDefault: "An unexpected error has occurred...",
     errorFetch: "An error occurred while fetching data...",
@@ -71,7 +71,7 @@ const locale: Locale = {
   }
 };
 
-const getCurrentLocale = (): LocaleKey => {
+export const getCurrentLocale = (): LocaleKey => {
   let currentLocale = localStorage.getItem("locale");
   const supportedLocales = Object.keys(locale);
 
@@ -85,5 +85,3 @@ const getCurrentLocale = (): LocaleKey => {
 
   return currentLocale as LocaleKey;
 };
-
-export const currentLocale = locale[getCurrentLocale()];

@@ -5,7 +5,7 @@ import { TodosContext } from "../context";
 import { TaskFieldsFragment } from "../graphql";
 import { client } from "../graphql/client";
 import { DangerButton } from "./DangerButton";
-import { currentLocale } from "../locale";
+import { locale, getCurrentLocale } from "../locale";
 
 export const Task: React.FC<TaskFieldsFragment> = ({ id, listId, name, completed }) => {
   const { toggleCompleted, deleteTask } = useContext(TodosContext);
@@ -16,6 +16,8 @@ export const Task: React.FC<TaskFieldsFragment> = ({ id, listId, name, completed
   };
 
   if (completed) labelStyle.textDecoration = "line-through";
+
+  const currentLocale = locale[getCurrentLocale()];
 
   const handleCompleted = async () => {
     toggleCompleted(listId, id);
@@ -38,7 +40,7 @@ export const Task: React.FC<TaskFieldsFragment> = ({ id, listId, name, completed
   };
 
   const handleDeleteTask = async () => {
-    const decision = await Confirm.fire({
+    const decision = await Confirm(currentLocale).fire({
       html: currentLocale.swalDeleteTaskConfirm
     });
 

@@ -6,10 +6,12 @@ import { ListFieldsFragment } from "../graphql";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TodosContext } from "../context";
 import { client } from "../graphql/client";
-import { currentLocale } from "../locale";
+import { locale, getCurrentLocale } from "../locale";
 
 export const Lists = () => {
   const { lists, addList } = useContext(TodosContext);
+
+  const currentLocale = locale[getCurrentLocale()];
 
   const handleAddList = async (name: ListFieldsFragment["name"]) => {
     if (!name.length) return;

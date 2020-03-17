@@ -1,5 +1,5 @@
 import Swal from "sweetalert2";
-import { currentLocale } from "./locale";
+import { Locale } from "./locale/types";
 
 export const capitalize = (str: string) =>
   str.length > 0 ? str[0].toUpperCase() + str.slice(1) : "";
@@ -16,17 +16,19 @@ export const Toast = Swal.mixin({
   }
 });
 
-export const Confirm = Swal.mixin({
-  title: currentLocale.swalConfirmTitle,
-  icon: "warning",
-  showCancelButton: true,
-  cancelButtonText: currentLocale.swalConfirmNoButton,
-  confirmButtonText: currentLocale.swalConfirmYesButton,
-  reverseButtons: true,
-  focusCancel: true,
-  buttonsStyling: false,
-  customClass: {
-    confirmButton: "btn btn-danger mx-2 mt-1",
-    cancelButton: "btn btn-primary mx-2 mt-1"
-  }
-});
+export const Confirm = (currentLocale: Locale[keyof Locale]) => {
+  return Swal.mixin({
+    title: currentLocale.swalConfirmTitle,
+    icon: "warning",
+    showCancelButton: true,
+    cancelButtonText: currentLocale.swalConfirmNoButton,
+    confirmButtonText: currentLocale.swalConfirmYesButton,
+    reverseButtons: true,
+    focusCancel: true,
+    buttonsStyling: false,
+    customClass: {
+      confirmButton: "btn btn-danger mx-2 mt-1",
+      cancelButton: "btn btn-primary mx-2 mt-1"
+    }
+  });
+};

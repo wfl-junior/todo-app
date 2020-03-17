@@ -7,7 +7,9 @@ import { Lists } from "./components/Lists";
 import { Tasks } from "./components/Tasks";
 import { TodosContext } from "./context";
 import { client } from "./graphql/client";
-import { currentLocale } from "./locale";
+import { locale, getCurrentLocale } from "./locale";
+import { DangerButton } from "./components/DangerButton";
+import { LocaleKey } from "./locale/types";
 
 interface State {
   loading: boolean;
@@ -37,16 +39,29 @@ export class App extends React.Component<{}, State> {
     }
   }
 
+  updateLocale(targetLocale: LocaleKey) {
+    localStorage.setItem("locale", targetLocale);
+    this.forceUpdate();
+  }
+
   render() {
     const { loading, error } = this.state;
 
     if (loading) return <Loading />;
+
+    const currentLocale = locale[getCurrentLocale()];
 
     if (error) return <Error msg={currentLocale.errorFetch} />;
 
     return (
       <main>
         <div className="container">
+          <DangerButton onClick={() => this.updateLocale("en-us")}>
+            click me for en-us
+          </DangerButton>
+          <DangerButton onClick={() => this.updateLocale("pt-br")}>
+            click me for pt-br
+          </DangerButton>
           <section className="todos">
             <Lists />
             <Tasks />
