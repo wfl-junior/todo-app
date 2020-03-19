@@ -3,7 +3,6 @@
 
 body {
   font-family: "Roboto", sans-serif;
-  background: #007bff;
   background: linear-gradient(to right, #0062e6, #33aeff);
 }
 
@@ -17,10 +16,8 @@ body {
 .lists {
   width: 40%;
 
-  .card-header {
-    .card-title {
-      margin-bottom: 0;
-    }
+  .card-header .card-title {
+    margin-bottom: 0;
   }
 }
 
