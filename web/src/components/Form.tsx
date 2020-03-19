@@ -35,6 +35,7 @@ export const Form: React.FC<FormProps> = ({ onSubmit, ...props }) => {
             value={value}
             onChange={e => setValue(capitalize(e.target.value))}
             disabled={submitting}
+            required
             {...props}
           />
           <button type="submit" className="btn btn-primary" disabled={submitting}>
