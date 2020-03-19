@@ -17,7 +17,7 @@ export const Tasks = () => {
   const currentLocale = locale[getCurrentLocale()];
 
   const handleDeleteList = async (id: number) => {
-    const decision = await Confirm(currentLocale).fire({
+    const decision = await Confirm().fire({
       html: currentLocale.swalDeleteListConfirm
     });
 
@@ -78,7 +78,7 @@ export const Tasks = () => {
       return;
     }
 
-    const decision = await Confirm(currentLocale).fire({
+    const decision = await Confirm().fire({
       html: currentLocale.swalClearCompletedConfirm
     });
 

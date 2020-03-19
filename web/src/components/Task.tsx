@@ -40,7 +40,7 @@ export const Task: React.FC<TaskFieldsFragment> = ({ id, listId, name, completed
   };
 
   const handleDeleteTask = async () => {
-    const decision = await Confirm(currentLocale).fire({
+    const decision = await Confirm().fire({
       html: currentLocale.swalDeleteTaskConfirm
     });
 

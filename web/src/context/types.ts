@@ -14,7 +14,7 @@ interface Payload extends Partial<GlobalState> {
 
 export interface Action {
   type:
-    | "SET_TODOS"
+    | "SET_LISTS"
     | "SET_ACTIVE_LIST"
     | "ADD_LIST"
     | "DELETE_LIST"

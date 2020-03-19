@@ -30,7 +30,7 @@ export const TodosProvider: React.FC = ({ children }) => {
 
   const setLists: Context["setLists"] = lists => {
     dispatch({
-      type: "SET_TODOS",
+      type: "SET_LISTS",
       payload: { lists }
     });
   };

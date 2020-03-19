@@ -4,7 +4,7 @@ export const activeListReducer: React.Reducer<GlobalState, Action> = (state, act
   const { type, payload } = action;
 
   switch (type) {
-    case "SET_TODOS": {
+    case "SET_LISTS": {
       return {
         ...state,
         lists: payload.lists!
