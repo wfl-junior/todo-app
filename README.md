@@ -17,10 +17,13 @@
 1. Create your database for this app
 2. Open the project folder in your terminal
 3. Install the dependencies with `npm install` or `yarn`
-4. Go to the server folder with `cd server`
-5. Rename `ormconfig.json.example` to `ormconfig.json`
-6. Open `ormconfig.json` and fill in your database connection
-7. Run `npm run schema:sync` or `yarn schema:sync` to build the database schema with typeorm
+4. Go to the web folder with `cd web`
+5. Install the dependencies with `npm install` or `yarn`
+6. Go to the server folder with `cd ../server`
+7. Install the dependencies with `npm install` or `yarn`
+8. Rename `ormconfig.json.example` to `ormconfig.json`
+9. Open `ormconfig.json` and fill in your database connection
+10. Run `npm run schema:sync` or `yarn schema:sync` to build the database schema with typeorm
 
 ## Now you can either use only the GraphQL Playground or use the React app
 
