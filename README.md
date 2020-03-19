@@ -42,6 +42,13 @@ To change it open src/index.ts in your text editor of choice, look for `const PO
 3. Wait until the app opens in your browser
 4. Enjoy!
 
+Note: you can change language by clicking on the flag on the top left corner
+
+#### Current supported languages
+
+1. en-us
+1. pt-br
+
 ---
 
 ## Todo
