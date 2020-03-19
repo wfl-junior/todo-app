@@ -1,5 +1,5 @@
-import { gql } from "apollo-boost";
-import { listFields } from "../fragments/listFields";
+import gql from "graphql-tag";
+import { listFieldsFragment } from "../fragments/listFields";
 
 export const listsQuery = gql`
   query Lists {
@@ -8,5 +8,5 @@ export const listsQuery = gql`
     }
   }
 
-  ${listFields}
+  ${listFieldsFragment}
 `;

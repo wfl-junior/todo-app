@@ -1,5 +1,5 @@
-import { gql } from "apollo-boost";
-import { taskFields } from "../fragments/taskFields";
+import gql from "graphql-tag";
+import { taskFieldsFragment } from "../fragments/taskFields";
 
 export const createTaskMutation = gql`
   mutation CreateTask($listId: Int!, $name: String!) {
@@ -8,5 +8,5 @@ export const createTaskMutation = gql`
     }
   }
 
-  ${taskFields}
+  ${taskFieldsFragment}
 `;

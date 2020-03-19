@@ -54,9 +54,66 @@ body {
   pointer-events: none;
 }
 
+.locale-selector {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+
+  .flag {
+    max-width: 35px;
+  }
+
+  &.open {
+    background-color: #f2f2f2;
+    width: 90px;
+    border-radius: 0 3px 3px 0;
+
+    ul {
+      padding: 0;
+      margin: 0;
+      width: 100%;
+
+      li {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding: 5px 0;
+
+        .flag {
+          width: 30px;
+        }
+
+        span {
+          width: 40px;
+        }
+
+        &:hover {
+          background-color: #33aeff;
+          color: white;
+        }
+      }
+    }
+  }
+}
+
 @media (max-width: 575.98px) {
   form button {
     margin-top: 16px;
+  }
+
+  .locale-selector:not(.open) {
+    height: 25px;
+
+    .flag {
+      opacity: 0.5;
+    }
   }
 }
 

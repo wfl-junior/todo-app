@@ -1,7 +1,7 @@
-import { gql } from "apollo-boost";
-import { taskFields } from "./taskFields";
+import gql from "graphql-tag";
+import { taskFieldsFragment } from "./taskFields";
 
-export const listFields = gql`
+export const listFieldsFragment = gql`
   fragment ListFields on List {
     id
     name
@@ -10,5 +10,5 @@ export const listFields = gql`
     }
   }
 
-  ${taskFields}
+  ${taskFieldsFragment}
 `;

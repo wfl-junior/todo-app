@@ -1,24 +1,64 @@
 import React from "react";
 import "./style.scss";
 import "./registerIcons";
-import { useListsQuery } from "./graphql";
 import { Loading } from "./components/Loading";
 import { Error } from "./components/Error";
+import { Lists } from "./components/Lists";
+import { Tasks } from "./components/Tasks";
+import { TodosContext } from "./context";
+import { client } from "./graphql/client";
+import { locale, getCurrentLocale } from "./locale";
+import { LocaleSelector } from "./components/LocaleSelector";
 
-export const App: React.FC = () => {
-  const { data, loading, error } = useListsQuery();
+interface State {
+  loading: boolean;
+  error: any;
+}
 
-  if (loading) return <Loading />;
+export class App extends React.Component<{}, State> {
+  static contextType = TodosContext;
+  context!: React.ContextType<typeof TodosContext>;
 
-  if (error) {
-    return <Error msg="An error occurred while fetching data..." />;
+  state = {
+    loading: true,
+    error: null
+  };
+
+  async componentDidMount() {
+    try {
+      const { lists } = await client.Lists();
+
+      this.context.setLists(lists);
+      this.context.setActiveList(lists[0]);
+    } catch (err) {
+      console.log(err);
+      this.setState({ error: err });
+    } finally {
+      this.setState({ loading: false });
+    }
   }
 
-  if (!data || !data.lists) {
-    return <Error msg="No data returned for some reason..." />;
-  }
+  render() {
+    const { loading, error } = this.state;
 
-  return (
-    <pre className="text-white">{JSON.stringify(data.lists, null, 2)}</pre>
-  );
-};
+    if (loading) return <Loading />;
+
+    const currentLocale = locale[getCurrentLocale()];
+
+    if (error) return <Error msg={currentLocale.errorFetch} />;
+
+    return (
+      <>
+        <LocaleSelector forceUpdate={() => this.forceUpdate()} />
+        <main>
+          <div className="container">
+            <section className="todos">
+              <Lists />
+              <Tasks />
+            </section>
+          </div>
+        </main>
+      </>
+    );
+  }
+}
