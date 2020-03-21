@@ -2,15 +2,17 @@
 
 1. Node.JS
 2. Typescript
-3. PostgresSQL
+3. PostgreSQL
 4. GraphQL
 5. React
 
 # Requirements
 
 1. [**Node.JS**](https://nodejs.org/en/) installed
-2. A [**PostgresSQL**](https://www.postgresql.org/) database
+2. A [**PostgreSQL**](https://www.postgresql.org/) database \*
 3. [**npm**](https://www.npmjs.com/) or [**yarn**](https://yarnpkg.com/) installed
+
+\* - Although I am using **PostgreSQL** as my database, I am also using [**Typeorm**](https://typeorm.io/#/) for all the database interaction, that said, you could use any other database they support, check their [guide](https://typeorm.io/#/) for more information.
 
 # Instructions
 
