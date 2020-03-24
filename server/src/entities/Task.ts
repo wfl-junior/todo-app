@@ -9,6 +9,7 @@ import {
 } from "typeorm";
 import { Field, Int, ObjectType } from "type-graphql";
 import { List } from "./List";
+import { Trim } from "../utils";
 
 @ObjectType()
 @Entity()
@@ -21,6 +22,7 @@ export class Task extends BaseEntity {
   @Column()
   listId: number;
 
+  @Trim()
   @Field()
   @Column()
   name: string;
