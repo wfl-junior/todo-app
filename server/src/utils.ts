@@ -1,5 +1,7 @@
-export function Trim() {
-  return function(target: Object, key: string) {
+type MyPropDecorator = (target: Object, key: string) => void;
+
+export function Trim(): MyPropDecorator {
+  return function(target, key) {
     const _key = Symbol();
 
     Object.defineProperty(target, key, {
