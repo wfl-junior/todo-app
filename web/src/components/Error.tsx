@@ -1,11 +1,10 @@
 import React from "react";
+import { locale, getCurrentLocale } from "../locale";
 import { Toast } from "../utils";
 
-interface ErrorProps {
-  msg: string;
-}
+export const Error: React.FC = () => {
+  const msg = locale[getCurrentLocale()].errorFetch;
 
-export const Error: React.FC<ErrorProps> = ({ msg }) => {
   Toast.fire({
     icon: "error",
     title: msg

@@ -1,18 +1,17 @@
 import React from "react";
 import "./style.scss";
 import "./registerIcons";
+import { TodosContext } from "./context";
+import { client } from "./graphql/client";
 import { Loading } from "./components/Loading";
+import { LocaleSelector } from "./components/LocaleSelector";
 import { Error } from "./components/Error";
 import { Lists } from "./components/Lists";
 import { Tasks } from "./components/Tasks";
-import { TodosContext } from "./context";
-import { client } from "./graphql/client";
-import { locale, getCurrentLocale } from "./locale";
-import { LocaleSelector } from "./components/LocaleSelector";
 
 interface State {
   loading: boolean;
-  error: any;
+  error: boolean;
 }
 
 export class App extends React.Component<{}, State> {
@@ -21,7 +20,7 @@ export class App extends React.Component<{}, State> {
 
   state = {
     loading: true,
-    error: null
+    error: false
   };
 
   async componentDidMount() {
@@ -30,11 +29,11 @@ export class App extends React.Component<{}, State> {
 
       this.context.setLists(lists);
       this.context.setActiveList(lists[0]);
+
+      this.setState({ loading: false });
     } catch (err) {
       console.log(err);
-      this.setState({ error: err });
-    } finally {
-      this.setState({ loading: false });
+      this.setState({ error: true, loading: false });
     }
   }
 
@@ -43,9 +42,14 @@ export class App extends React.Component<{}, State> {
 
     if (loading) return <Loading />;
 
-    const currentLocale = locale[getCurrentLocale()];
-
-    if (error) return <Error msg={currentLocale.errorFetch} />;
+    if (error) {
+      return (
+        <>
+          <LocaleSelector forceUpdate={() => this.forceUpdate()} />
+          <Error />
+        </>
+      );
+    }
 
     return (
       <>
