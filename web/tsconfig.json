@@ -23,7 +23,8 @@
     "strict": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true
+    "noEmit": true,
+    "removeComments": true
   },
   "exclude": [
     "node_modules",
