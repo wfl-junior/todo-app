@@ -16,11 +16,11 @@ import { Trim } from "../utils";
 export class Task extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
-  id: number;
+  readonly id: number;
 
   @Field(() => Int)
   @Column()
-  listId: number;
+  readonly listId: number;
 
   @Trim()
   @Field()
@@ -33,17 +33,13 @@ export class Task extends BaseEntity {
 
   @Field()
   @CreateDateColumn()
-  createdAt: Date;
+  readonly createdAt: Date;
 
   @Field()
   @UpdateDateColumn()
-  updatedAt: Date;
+  readonly updatedAt: Date;
 
   @Field(() => List)
-  @ManyToOne(
-    () => List,
-    list => list.tasks,
-    { onDelete: "CASCADE" }
-  )
+  @ManyToOne(() => List, list => list.tasks, { onDelete: "CASCADE" })
   list: List;
 }
