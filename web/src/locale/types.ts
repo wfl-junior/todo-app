@@ -1,35 +1,36 @@
 export type LocaleKey = "en-us" | "pt-br";
 
-export type Locale = {
-  [K in LocaleKey]: {
-    errorDefault: string;
-    errorFetch: string;
-    listsCardTitle: string;
-    tasksCardTitle: string;
-    ammountTasksCompleted: string;
-    listsInputPlaceholder: string;
-    tasksInputPlaceholder: string;
-    formButton: string;
-    formButtonSubmitting: string;
-    clearCompletedButton: string;
-    deleteListButton: string;
-    swalConfirmTitle: string;
-    swalConfirmYesButton: string;
-    swalConfirmNoButton: string;
-    swalAddListSuccess: string;
-    swalAddListError: string;
-    swalDeleteListConfirm: string;
-    swalDeleteListSuccess: string;
-    swalDeleteListError: string;
-    swalAddTaskSuccess: string;
-    swalAddTaskError: string;
-    swalClearCompletedEmpty: string;
-    swalClearCompletedConfirm: string;
-    swalClearCompletedSuccess: string;
-    swalClearCompletedError: string;
-    swalUpdateTaskError: string;
-    swalDeleteTaskConfirm: string;
-    swalDeleteTaskSuccess: string;
-    swalDeleteTaskError: string;
-  };
-};
+type LocaleMapKey =
+  | "errorDefault"
+  | "errorFetch"
+  | "listsCardTitle"
+  | "tasksCardTitle"
+  | "ammountTasksCompleted"
+  | "listsInputPlaceholder"
+  | "tasksInputPlaceholder"
+  | "formButton"
+  | "formButtonSubmitting"
+  | "clearCompletedButton"
+  | "deleteListButton"
+  | "swalConfirmTitle"
+  | "swalConfirmYesButton"
+  | "swalConfirmNoButton"
+  | "swalAddListSuccess"
+  | "swalAddListError"
+  | "swalDeleteListConfirm"
+  | "swalDeleteListSuccess"
+  | "swalDeleteListError"
+  | "swalAddTaskSuccess"
+  | "swalAddTaskError"
+  | "swalClearCompletedEmpty"
+  | "swalClearCompletedConfirm"
+  | "swalClearCompletedSuccess"
+  | "swalClearCompletedError"
+  | "swalUpdateTaskError"
+  | "swalDeleteTaskConfirm"
+  | "swalDeleteTaskSuccess"
+  | "swalDeleteTaskError";
+
+type LocaleMap = Record<LocaleMapKey, string>;
+
+export type Locale = Record<LocaleKey, LocaleMap>;
