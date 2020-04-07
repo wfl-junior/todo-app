@@ -12,7 +12,7 @@ import { List } from "./List";
 import { Trim } from "../utils";
 
 @ObjectType()
-@Entity()
+@Entity("tasks")
 export class Task extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
