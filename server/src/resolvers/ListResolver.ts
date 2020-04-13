@@ -1,7 +1,6 @@
 import { Resolver, Query, Mutation, Arg, Int, Args } from "type-graphql";
 import { List } from "../entities/List";
 import { CreateListArgs } from "../types/CreateListArgs";
-import { validateOrReject } from "class-validator";
 import { getRepository } from "typeorm";
 
 @Resolver(List)
@@ -18,8 +17,6 @@ export class ListResolver {
 
   @Mutation(() => List)
   async createList(@Args() args: CreateListArgs): Promise<List> {
-    await validateOrReject(args);
-
     const list = await List.create(args).save();
     list.tasks = [];
 

@@ -1,7 +1,6 @@
 import { Resolver, Query, Mutation, Arg, Int, Args } from "type-graphql";
 import { Task } from "../entities/Task";
 import { CreateTaskArgs } from "../types/CreateTaskArgs";
-import { validateOrReject } from "class-validator";
 import { List } from "../entities/List";
 import { UpdateTaskArgs } from "../types/UpdateTaskArgs";
 import { getRepository } from "typeorm";
@@ -15,8 +14,6 @@ export class TaskResolver {
 
   @Mutation(() => Task)
   async createTask(@Args() args: CreateTaskArgs): Promise<Task> {
-    await validateOrReject(args);
-
     const task = await Task.create(args).save();
     const list = await getRepository(List)
       .createQueryBuilder("list")
@@ -34,8 +31,6 @@ export class TaskResolver {
 
   @Mutation(() => Task)
   async updateTask(@Args() { id, ...args }: UpdateTaskArgs): Promise<Task> {
-    await validateOrReject({ id, ...args });
-
     await Task.update({ id }, args);
 
     const task = await Task.findOne({ where: { id }, relations: ["list"] });
