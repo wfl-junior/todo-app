@@ -16,11 +16,8 @@ export class ListResolver {
   }
 
   @Mutation(() => List)
-  async createList(@Args() args: CreateListArgs): Promise<List> {
-    const list = await List.create(args).save();
-    list.tasks = [];
-
-    return list;
+  async createList(@Args() { name }: CreateListArgs): Promise<List> {
+    return await List.create({ name, tasks: [] }).save();
   }
 
   @Mutation(() => Boolean)
