@@ -86,5 +86,5 @@ export const getCurrentLocale = (): LocaleKey => {
     currentLocale = navigatorLocale;
   }
 
-  return currentLocale as LocaleKey;
+  return currentLocale;
 };
