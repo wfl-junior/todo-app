@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { LocaleKey } from "../locale/types";
 import { getCurrentLocale, supportedLocales } from "../locale";
+import { LocaleSelectorImage } from "./LocaleSelectorImage";
 
 interface LocaleSelectorProps {
   forceUpdate: () => void;
@@ -9,15 +9,8 @@ interface LocaleSelectorProps {
 export const LocaleSelector: React.FC<LocaleSelectorProps> = ({ forceUpdate }) => {
   const [open, setOpen] = useState(false);
 
-  const updateLocale = (targetLocale: LocaleKey) => {
-    localStorage.setItem("locale", targetLocale);
-    forceUpdate();
-  };
-
   let className = "locale-selector";
   if (open) className += " open";
-
-  const localeKey = getCurrentLocale();
 
   return (
     <aside
@@ -28,23 +21,20 @@ export const LocaleSelector: React.FC<LocaleSelectorProps> = ({ forceUpdate }) =
     >
       {open ? (
         <ul>
-          {(supportedLocales as LocaleKey[]).map(lk => (
-            <li key={lk} onClick={() => updateLocale(lk)}>
-              <img
-                src={require(`../locale/flags/${lk}.svg`)}
-                alt={`${lk} flag`}
-                className="flag"
-              />{" "}
-              <span>{lk}</span>
+          {supportedLocales.map(lk => (
+            <li
+              key={lk}
+              onClick={() => {
+                localStorage.setItem("locale", lk);
+                forceUpdate();
+              }}
+            >
+              <LocaleSelectorImage localeKey={lk} /> <span>{lk}</span>
             </li>
           ))}
         </ul>
       ) : (
-        <img
-          src={require(`../locale/flags/${localeKey}.svg`)}
-          alt={`${localeKey} flag`}
-          className="flag"
-        />
+        <LocaleSelectorImage localeKey={getCurrentLocale()} />
       )}
     </aside>
   );
