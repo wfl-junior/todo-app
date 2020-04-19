@@ -1,24 +1,6 @@
 import React, { useReducer, createContext } from "react";
 import { activeListReducer } from "./reducer";
-import { GlobalState } from "./types";
-import { ListFieldsFragment, TaskFieldsFragment } from "../graphql";
-
-export interface Context extends GlobalState {
-  setLists: (lists: ListFieldsFragment[]) => void;
-  setActiveList: (list: ListFieldsFragment) => void;
-  addList: (list: ListFieldsFragment) => void;
-  deleteList: (listId: ListFieldsFragment["id"]) => void;
-  addTask: (task: TaskFieldsFragment) => void;
-  toggleCompleted: (
-    listId: ListFieldsFragment["id"],
-    taskId: TaskFieldsFragment["id"]
-  ) => void;
-  deleteTask: (
-    listId: ListFieldsFragment["id"],
-    taskId: TaskFieldsFragment["id"]
-  ) => void;
-  clearCompleted: (listId: ListFieldsFragment["id"]) => void;
-}
+import { Context } from "./types";
 
 export const TodosContext = createContext<Context>({} as Context);
 

@@ -44,9 +44,9 @@ export const activeListReducer: React.Reducer<GlobalState, Action> = (state, act
       const lists = [...state.lists];
       const targetTask = lists
         .find(list => list.id === payload.listId)
-        ?.tasks.find(task => task.id === payload.taskId);
+        ?.tasks.find(task => task.id === payload.taskId)!;
 
-      targetTask!.completed = !targetTask!.completed;
+      targetTask.completed = !targetTask.completed;
 
       return {
         ...state,
@@ -55,8 +55,8 @@ export const activeListReducer: React.Reducer<GlobalState, Action> = (state, act
     }
     case "DELETE_TASK": {
       const lists = [...state.lists];
-      const targetList = lists.find(list => list.id === payload.listId);
-      targetList!.tasks = targetList!.tasks.filter(task => task.id !== payload.taskId);
+      const targetList = lists.find(list => list.id === payload.listId)!;
+      targetList.tasks = targetList.tasks.filter(task => task.id !== payload.taskId);
 
       return {
         ...state,
@@ -65,8 +65,8 @@ export const activeListReducer: React.Reducer<GlobalState, Action> = (state, act
     }
     case "CLEAR_COMPLETED_TASKS": {
       const lists = [...state.lists];
-      const targetList = lists.find(list => list.id === payload.listId);
-      targetList!.tasks = targetList!.tasks.filter(task => !task.completed);
+      const targetList = lists.find(list => list.id === payload.listId)!;
+      targetList.tasks = targetList.tasks.filter(task => !task.completed);
 
       return {
         ...state,

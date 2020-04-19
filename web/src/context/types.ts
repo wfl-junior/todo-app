@@ -24,3 +24,20 @@ export interface Action {
     | "CLEAR_COMPLETED_TASKS";
   payload: Payload;
 }
+
+export interface Context extends GlobalState {
+  setLists: (lists: ListFieldsFragment[]) => void;
+  setActiveList: (list: ListFieldsFragment) => void;
+  addList: (list: ListFieldsFragment) => void;
+  deleteList: (listId: ListFieldsFragment["id"]) => void;
+  addTask: (task: TaskFieldsFragment) => void;
+  toggleCompleted: (
+    listId: ListFieldsFragment["id"],
+    taskId: TaskFieldsFragment["id"]
+  ) => void;
+  deleteTask: (
+    listId: ListFieldsFragment["id"],
+    taskId: TaskFieldsFragment["id"]
+  ) => void;
+  clearCompleted: (listId: ListFieldsFragment["id"]) => void;
+}
