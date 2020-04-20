@@ -5,7 +5,7 @@ import { Form } from "./Form";
 import { Toast, Confirm } from "../utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { client } from "../graphql/client";
-import { TaskFieldsFragment } from "../graphql";
+import { ListFieldsFragment, CreateTaskMutationVariables } from "../graphql";
 import { DangerButton } from "./DangerButton";
 import { locale, getCurrentLocale } from "../locale";
 
@@ -16,7 +16,7 @@ export const Tasks = () => {
 
   const currentLocale = locale[getCurrentLocale()];
 
-  const handleDeleteList = async (id: number) => {
+  const handleDeleteList = async (id: ListFieldsFragment["id"]) => {
     const decision = await Confirm().fire({
       html: currentLocale.swalDeleteListConfirm
     });
@@ -46,7 +46,7 @@ export const Tasks = () => {
     }
   };
 
-  const handleAddTask = async (task: Pick<TaskFieldsFragment, "listId" | "name">) => {
+  const handleAddTask = async (task: CreateTaskMutationVariables) => {
     if (!task.name.length) return;
 
     try {
@@ -141,8 +141,8 @@ export const Tasks = () => {
           aria-label={currentLocale.tasksInputPlaceholder.replace("...", "")}
         />
         <ul className="list-group">
-          {activeList.tasks.map(({ id, ...rest }) => (
-            <Task key={id} id={id} {...rest} />
+          {activeList.tasks.map(task => (
+            <Task key={task.id} {...task} />
           ))}
         </ul>
         <div className="d-flex justify-content-around text-align-center mt-3">
