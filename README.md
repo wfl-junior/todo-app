@@ -1,10 +1,15 @@
-# Technologies used
+# Tech Stack
 
 1. Node.JS
-2. Typescript
-3. PostgreSQL
+2. Express
+3. Typescript
 4. GraphQL
-5. React
+5. Apollo Server
+6. PostgreSQL
+7. TypeORM
+8. Type GraphQL
+9. React
+10. GraphQL Request
 
 # Requirements
 
@@ -12,7 +17,7 @@
 2. A [**PostgreSQL**](https://www.postgresql.org/) database \*
 3. [**npm**](https://www.npmjs.com/) or [**yarn**](https://yarnpkg.com/) installed
 
-\* - Although I am using **PostgreSQL** as my database, I am also using [**Typeorm**](https://typeorm.io/#/) for all the database interaction, that said, you could use any other database they support, check their [guide](https://typeorm.io/#/) for more information.
+\* - Although I am using **PostgreSQL** as my database, I am also using [**Typeorm**](https://typeorm.io/#/) for all the database interaction, without any postgres only feature, that said, you could use any other database they support, check out their [guide](https://typeorm.io/#/) for more information.
 
 # Instructions
 
