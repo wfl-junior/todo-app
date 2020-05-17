@@ -1,3 +1,6 @@
 {
-  "printWidth": 90
+  "printWidth": 90,
+  "trailingComma": "none",
+  "arrowParens": "avoid",
+  "tabWidth": 2
 }

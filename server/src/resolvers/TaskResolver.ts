@@ -5,11 +5,13 @@ import { List } from "../entities/List";
 import { UpdateTaskArgs } from "../types/UpdateTaskArgs";
 import { getRepository } from "typeorm";
 
+const relations: string[] = ["list"];
+
 @Resolver(Task)
 export class TaskResolver {
   @Query(() => [Task])
-  async tasks(): Promise<Task[]> {
-    return await Task.find({ order: { id: "ASC" }, relations: ["list"] });
+  tasks(): Promise<Task[]> {
+    return Task.find({ order: { id: "ASC" }, relations });
   }
 
   @Mutation(() => Task)
@@ -31,12 +33,11 @@ export class TaskResolver {
 
   @Mutation(() => Task)
   async updateTask(@Args() { id, ...args }: UpdateTaskArgs): Promise<Task> {
-    await Task.update({ id }, args);
-
-    const task = await Task.findOne({ where: { id }, relations: ["list"] });
+    const task = await Task.findOne({ where: { id }, relations });
     if (!task) throw new Error("Task not found");
 
-    return task;
+    Object.assign(task, args);
+    return task.save();
   }
 
   @Mutation(() => Boolean)

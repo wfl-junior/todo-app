@@ -6,8 +6,8 @@ import { getRepository } from "typeorm";
 @Resolver(List)
 export class ListResolver {
   @Query(() => [List])
-  async lists(): Promise<List[]> {
-    return await getRepository(List)
+  lists(): Promise<List[]> {
+    return getRepository(List)
       .createQueryBuilder("list")
       .leftJoinAndSelect("list.tasks", "tasks")
       .orderBy("list.id", "ASC")
@@ -16,8 +16,8 @@ export class ListResolver {
   }
 
   @Mutation(() => List)
-  async createList(@Args() { name }: CreateListArgs): Promise<List> {
-    return await List.create({ name, tasks: [] }).save();
+  createList(@Args() { name }: CreateListArgs): Promise<List> {
+    return List.create({ name, tasks: [] }).save();
   }
 
   @Mutation(() => Boolean)
