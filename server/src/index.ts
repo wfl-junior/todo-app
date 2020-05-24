@@ -7,7 +7,7 @@ import express from "express";
 (async () => {
   const [schema] = await Promise.all([
     buildSchema({
-      resolvers: [`${__dirname}/resolvers/*Resolver.ts`]
+      resolvers: [`${__dirname}/resolvers/*Resolver.[tj]s`]
     }),
     createConnection()
   ]);
