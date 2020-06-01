@@ -34,10 +34,6 @@
 
 ## Now you can either use only the GraphQL Playground or use the React app
 
-By default this application will use the port **4000**.
-
-To change it open src/index.ts in your text editor of choice, look for `const PORT` and alter its value.
-
 ### To run only the server
 
 1. Start the server with `npm start` or `yarn start`
