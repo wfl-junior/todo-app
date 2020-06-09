@@ -19,7 +19,7 @@
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.0",
     "sweetalert2": "^9.14.4",
-    "typescript": "3.9.5"
+    "typescript": "^3.9.5"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^1.15.1",
