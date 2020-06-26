@@ -73,8 +73,10 @@ export const locale: Locale = {
 
 export const supportedLocales = Object.keys(locale) as LocaleKey[];
 
+export const localStorageLocaleKey = "locale";
+
 export const getCurrentLocale = (): LocaleKey => {
-  let currentLocale = localStorage.getItem("locale") as LocaleKey | null;
+  let currentLocale = localStorage.getItem(localStorageLocaleKey) as LocaleKey | null;
 
   if (!currentLocale || !supportedLocales.includes(currentLocale)) {
     let navigatorLocale = navigator.language.toLowerCase() as LocaleKey;
@@ -82,7 +84,7 @@ export const getCurrentLocale = (): LocaleKey => {
       navigatorLocale = "en-us";
     }
 
-    localStorage.setItem("locale", navigatorLocale);
+    localStorage.setItem(localStorageLocaleKey, navigatorLocale);
     currentLocale = navigatorLocale;
   }
 

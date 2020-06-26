@@ -27,14 +27,14 @@ export const Tasks = () => {
       try {
         const { deleteLists } = await client.DeleteLists({ ids: [id] });
 
-        if (deleteLists) {
-          Toast.fire({
-            title: currentLocale.swalDeleteListSuccess,
-            icon: "success"
-          });
-        } else {
+        if (!deleteLists) {
           throw new Error(currentLocale.errorDefault);
         }
+
+        Toast.fire({
+          title: currentLocale.swalDeleteListSuccess,
+          icon: "success"
+        });
       } catch (err) {
         console.log(err);
 
@@ -90,14 +90,14 @@ export const Tasks = () => {
           ids: targetTasks.map(task => task.id)
         });
 
-        if (deleteTasks) {
-          Toast.fire({
-            title: currentLocale.swalClearCompletedSuccess,
-            icon: "success"
-          });
-        } else {
+        if (!deleteTasks) {
           throw new Error(currentLocale.errorDefault);
         }
+
+        Toast.fire({
+          title: currentLocale.swalClearCompletedSuccess,
+          icon: "success"
+        });
       } catch (err) {
         console.log(err);
 

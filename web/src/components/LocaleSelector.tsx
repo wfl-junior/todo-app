@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getCurrentLocale, supportedLocales } from "../locale";
+import { getCurrentLocale, supportedLocales, localStorageLocaleKey } from "../locale";
 import { LocaleSelectorImage } from "./LocaleSelectorImage";
 
 interface LocaleSelectorProps {
@@ -9,12 +9,12 @@ interface LocaleSelectorProps {
 export const LocaleSelector: React.FC<LocaleSelectorProps> = ({ forceUpdate }) => {
   const [open, setOpen] = useState(false);
 
-  let className = "locale-selector";
-  if (open) className += " open";
+  const asideClasses = ["locale-selector"];
+  if (open) asideClasses.push("open");
 
   return (
     <aside
-      className={className}
+      className={asideClasses.join(" ")}
       onClick={() => setOpen(!open)}
       aria-expanded={open}
       aria-haspopup="true"
@@ -25,7 +25,7 @@ export const LocaleSelector: React.FC<LocaleSelectorProps> = ({ forceUpdate }) =
             <li
               key={lk}
               onClick={() => {
-                localStorage.setItem("locale", lk);
+                localStorage.setItem(localStorageLocaleKey, lk);
                 forceUpdate();
               }}
             >

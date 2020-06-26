@@ -50,14 +50,14 @@ export const Task: React.FC<TaskFieldsFragment> = ({ id, listId, name, completed
       try {
         const { deleteTasks } = await client.DeleteTasks({ ids: [id] });
 
-        if (deleteTasks) {
-          Toast.fire({
-            title: currentLocale.swalDeleteTaskSuccess,
-            icon: "success"
-          });
-        } else {
+        if (!deleteTasks) {
           throw new Error(currentLocale.errorDefault);
         }
+
+        Toast.fire({
+          title: currentLocale.swalDeleteTaskSuccess,
+          icon: "success"
+        });
       } catch (err) {
         console.log(err);
 
