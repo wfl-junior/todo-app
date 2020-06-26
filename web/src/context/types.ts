@@ -5,25 +5,23 @@ export interface GlobalState {
   activeList: ListFieldsFragment | null;
 }
 
-interface Payload extends Partial<GlobalState> {
-  listId?: ListFieldsFragment["id"];
-  list?: ListFieldsFragment;
-  task?: TaskFieldsFragment;
-  taskId?: TaskFieldsFragment["id"];
+interface IAction<T extends string, P extends object> {
+  type: T;
+  payload: P;
 }
 
-export interface Action {
-  type:
-    | "SET_LISTS"
-    | "SET_ACTIVE_LIST"
-    | "ADD_LIST"
-    | "DELETE_LIST"
-    | "ADD_TASK"
-    | "TOGGLE_TASK_COMPLETED"
-    | "DELETE_TASK"
-    | "CLEAR_COMPLETED_TASKS";
-  payload: Payload;
-}
+export type Action =
+  | IAction<"SET_LISTS", { lists: ListFieldsFragment[] }>
+  | IAction<"SET_ACTIVE_LIST" | "ADD_LIST", { list: ListFieldsFragment }>
+  | IAction<"DELETE_LIST" | "CLEAR_COMPLETED_TASKS", { listId: ListFieldsFragment["id"] }>
+  | IAction<"ADD_TASK", { task: TaskFieldsFragment }>
+  | IAction<
+      "TOGGLE_TASK_COMPLETED" | "DELETE_TASK",
+      {
+        listId: ListFieldsFragment["id"];
+        taskId: TaskFieldsFragment["id"];
+      }
+    >;
 
 export interface Context extends GlobalState {
   setLists: (lists: ListFieldsFragment[]) => void;

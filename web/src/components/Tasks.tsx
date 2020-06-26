@@ -1,16 +1,16 @@
-import React, { useContext } from "react";
-import { TodosContext } from "../context";
-import { Task } from "./Task";
-import { Form } from "./Form";
-import { Toast, Confirm } from "../utils";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { client } from "../graphql/client";
-import { ListFieldsFragment, CreateTaskMutationVariables } from "../graphql";
-import { DangerButton } from "./DangerButton";
+import React from "react";
+import { useTodos } from "../context";
 import { locale, getCurrentLocale } from "../locale";
+import { ListFieldsFragment, CreateTaskMutationVariables } from "../graphql";
+import { Confirm, Toast } from "../utils";
+import { client } from "../graphql/client";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Form } from "./Form";
+import { Task } from "./Task";
+import { DangerButton } from "./DangerButton";
 
 export const Tasks = () => {
-  const { activeList, deleteList, addTask, clearCompleted } = useContext(TodosContext);
+  const { activeList, deleteList, addTask, clearCompleted } = useTodos();
 
   if (!activeList) return null;
 

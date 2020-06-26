@@ -1,15 +1,15 @@
-import React, { useContext } from "react";
-import { List } from "./List";
-import { Form } from "./Form";
-import { Toast } from "../utils";
-import { ListFieldsFragment } from "../graphql";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { TodosContext } from "../context";
-import { client } from "../graphql/client";
+import React from "react";
+import { useTodos } from "../context";
 import { locale, getCurrentLocale } from "../locale";
+import { ListFieldsFragment } from "../graphql";
+import { client } from "../graphql/client";
+import { Toast } from "../utils";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Form } from "./Form";
+import { List } from "./List";
 
 export const Lists = () => {
-  const { lists, addList } = useContext(TodosContext);
+  const { lists, addList } = useTodos();
 
   const currentLocale = locale[getCurrentLocale()];
 

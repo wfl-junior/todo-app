@@ -1,14 +1,14 @@
-import React, { useContext } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Confirm, Toast } from "../utils";
-import { TodosContext } from "../context";
+import React from "react";
 import { TaskFieldsFragment } from "../graphql";
-import { client } from "../graphql/client";
-import { DangerButton } from "./DangerButton";
+import { useTodos } from "../context";
 import { locale, getCurrentLocale } from "../locale";
+import { client } from "../graphql/client";
+import { Toast, Confirm } from "../utils";
+import { DangerButton } from "./DangerButton";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const Task: React.FC<TaskFieldsFragment> = ({ id, listId, name, completed }) => {
-  const { toggleCompleted, deleteTask } = useContext(TodosContext);
+  const { toggleCompleted, deleteTask } = useTodos();
 
   const labelStyle: React.CSSProperties = {
     cursor: "pointer",

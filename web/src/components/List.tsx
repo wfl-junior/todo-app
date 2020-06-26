@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { TodosContext } from "../context";
+import React from "react";
+import { useTodos } from "../context";
 import { ListFieldsFragment } from "../graphql";
 
 type ListProps = {
@@ -7,18 +7,23 @@ type ListProps = {
 } & Pick<ListFieldsFragment, "id" | "name">;
 
 export const List: React.FC<ListProps> = ({ id, name, tasksLength }) => {
-  const { lists, activeList, setActiveList } = useContext(TodosContext);
+  const { lists, activeList, setActiveList } = useTodos();
 
   if (!activeList) return null;
 
-  let className =
-    "list-group-item list-group-item-action d-flex justify-content-between align-items-center";
+  const liClasses: string[] = [
+    "list-group-item",
+    "list-group-item-action",
+    "d-flex",
+    "justify-content-between",
+    "align-items-center"
+  ];
 
-  if (activeList.id === id) className += " active";
+  if (activeList.id === id) liClasses.push("active");
 
   return (
     <li
-      className={className}
+      className={liClasses.join(" ")}
       style={{ cursor: "pointer" }}
       onClick={() => {
         const targetList = lists.find(list => list.id === id);
