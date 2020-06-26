@@ -9,7 +9,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  DateTime: any;
+  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
+  DateTime: Date;
 };
 
 export type List = {
@@ -71,10 +72,7 @@ export type ListFieldsFragment = Pick<List, "id" | "name"> & {
   tasks: Array<TaskFieldsFragment>;
 };
 
-export type TaskFieldsFragment = Pick<
-  Task,
-  "id" | "listId" | "name" | "completed"
->;
+export type TaskFieldsFragment = Pick<Task, "id" | "listId" | "name" | "completed">;
 
 export type CreateListMutationVariables = {
   name: Scalars["String"];
@@ -159,12 +157,7 @@ export const DeleteTasksDocument = gql`
   }
 `;
 export const UpdateTaskDocument = gql`
-  mutation UpdateTask(
-    $id: Int!
-    $listId: Int!
-    $name: String!
-    $completed: Boolean!
-  ) {
+  mutation UpdateTask($id: Int!, $listId: Int!, $name: String!, $completed: Boolean!) {
     updateTask(id: $id, listId: $listId, name: $name, completed: $completed) {
       ...TaskFields
     }
@@ -179,50 +172,45 @@ export const ListsDocument = gql`
   }
   ${ListFieldsFragmentDoc}
 `;
-export function getSdk(client: GraphQLClient) {
+
+export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
+
+const defaultWrapper: SdkFunctionWrapper = sdkFunction => sdkFunction();
+export function getSdk(
+  client: GraphQLClient,
+  withWrapper: SdkFunctionWrapper = defaultWrapper
+) {
   return {
-    CreateList(
-      variables: CreateListMutationVariables
-    ): Promise<CreateListMutation> {
-      return client.request<CreateListMutation>(
-        print(CreateListDocument),
-        variables
+    CreateList(variables: CreateListMutationVariables): Promise<CreateListMutation> {
+      return withWrapper(() =>
+        client.request<CreateListMutation>(print(CreateListDocument), variables)
       );
     },
-    CreateTask(
-      variables: CreateTaskMutationVariables
-    ): Promise<CreateTaskMutation> {
-      return client.request<CreateTaskMutation>(
-        print(CreateTaskDocument),
-        variables
+    CreateTask(variables: CreateTaskMutationVariables): Promise<CreateTaskMutation> {
+      return withWrapper(() =>
+        client.request<CreateTaskMutation>(print(CreateTaskDocument), variables)
       );
     },
-    DeleteLists(
-      variables: DeleteListsMutationVariables
-    ): Promise<DeleteListsMutation> {
-      return client.request<DeleteListsMutation>(
-        print(DeleteListsDocument),
-        variables
+    DeleteLists(variables: DeleteListsMutationVariables): Promise<DeleteListsMutation> {
+      return withWrapper(() =>
+        client.request<DeleteListsMutation>(print(DeleteListsDocument), variables)
       );
     },
-    DeleteTasks(
-      variables: DeleteTasksMutationVariables
-    ): Promise<DeleteTasksMutation> {
-      return client.request<DeleteTasksMutation>(
-        print(DeleteTasksDocument),
-        variables
+    DeleteTasks(variables: DeleteTasksMutationVariables): Promise<DeleteTasksMutation> {
+      return withWrapper(() =>
+        client.request<DeleteTasksMutation>(print(DeleteTasksDocument), variables)
       );
     },
-    UpdateTask(
-      variables: UpdateTaskMutationVariables
-    ): Promise<UpdateTaskMutation> {
-      return client.request<UpdateTaskMutation>(
-        print(UpdateTaskDocument),
-        variables
+    UpdateTask(variables: UpdateTaskMutationVariables): Promise<UpdateTaskMutation> {
+      return withWrapper(() =>
+        client.request<UpdateTaskMutation>(print(UpdateTaskDocument), variables)
       );
     },
     Lists(variables?: ListsQueryVariables): Promise<ListsQuery> {
-      return client.request<ListsQuery>(print(ListsDocument), variables);
+      return withWrapper(() =>
+        client.request<ListsQuery>(print(ListsDocument), variables)
+      );
     }
   };
 }
+export type Sdk = ReturnType<typeof getSdk>;

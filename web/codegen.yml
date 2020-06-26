@@ -9,3 +9,5 @@ generates:
       - "typescript-graphql-request"
     config:
       skipTypename: true
+      scalars:
+        DateTime: Date
