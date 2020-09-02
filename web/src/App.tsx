@@ -42,26 +42,21 @@ export class App extends React.Component<{}, State> {
 
     if (loading) return <Loading />;
 
-    if (error) {
-      return (
-        <>
-          <LocaleSelector forceUpdate={() => this.forceUpdate()} />
-          <Error />
-        </>
-      );
-    }
-
     return (
       <>
-        <LocaleSelector forceUpdate={() => this.forceUpdate()} />
-        <main>
-          <div className="container">
-            <section className="todos">
-              <Lists />
-              <Tasks />
-            </section>
-          </div>
-        </main>
+        <LocaleSelector forceUpdate={this.forceUpdate.bind(this)} />
+        {error ? (
+          <Error />
+        ) : (
+          <main>
+            <div className="container">
+              <section className="todos">
+                <Lists />
+                <Tasks />
+              </section>
+            </div>
+          </main>
+        )}
       </>
     );
   }

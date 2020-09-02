@@ -3,7 +3,7 @@ import { getCurrentLocale, supportedLocales, localStorageLocaleKey } from "../lo
 import { LocaleSelectorImage } from "./LocaleSelectorImage";
 
 interface LocaleSelectorProps {
-  forceUpdate: () => void;
+  forceUpdate: React.Component["forceUpdate"];
 }
 
 export const LocaleSelector: React.FC<LocaleSelectorProps> = ({ forceUpdate }) => {
