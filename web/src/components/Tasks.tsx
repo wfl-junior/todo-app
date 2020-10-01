@@ -1,6 +1,5 @@
 import React from "react";
-import { useTodos } from "../context";
-import { locale, getCurrentLocale } from "../locale";
+import { useTodos } from "../contexts/todos";
 import { ListFieldsFragment, CreateTaskMutationVariables } from "../graphql";
 import { Confirm, Toast } from "../utils";
 import { client } from "../graphql/client";
@@ -8,16 +7,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Form } from "./Form";
 import { Task } from "./Task";
 import { DangerButton } from "./DangerButton";
+import { useLocale } from "../contexts/locale";
 
 export const Tasks = () => {
   const { activeList, deleteList, addTask, clearCompleted } = useTodos();
+  const { currentLocale } = useLocale();
 
   if (!activeList) return null;
 
-  const currentLocale = locale[getCurrentLocale()];
-
   const handleDeleteList = async (id: ListFieldsFragment["id"]) => {
-    const decision = await Confirm().fire({
+    const decision = await Confirm(currentLocale).fire({
       html: currentLocale.swalDeleteListConfirm
     });
 
@@ -78,7 +77,7 @@ export const Tasks = () => {
       return;
     }
 
-    const decision = await Confirm().fire({
+    const decision = await Confirm(currentLocale).fire({
       html: currentLocale.swalClearCompletedConfirm
     });
 

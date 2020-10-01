@@ -1,4 +1,4 @@
-import { ListFieldsFragment, TaskFieldsFragment } from "../graphql";
+import { ListFieldsFragment, TaskFieldsFragment } from "../../graphql";
 
 export interface GlobalState {
   lists: ListFieldsFragment[];

@@ -31,6 +31,6 @@ type LocaleMapKey =
   | "swalDeleteTaskSuccess"
   | "swalDeleteTaskError";
 
-type LocaleMap = Record<LocaleMapKey, string>;
+export type LocaleMap = Record<LocaleMapKey, string>;
 
 export type Locale = Record<LocaleKey, LocaleMap>;

@@ -1,14 +1,15 @@
 import React from "react";
 import { TaskFieldsFragment } from "../graphql";
-import { useTodos } from "../context";
-import { locale, getCurrentLocale } from "../locale";
+import { useTodos } from "../contexts/todos";
 import { client } from "../graphql/client";
 import { Toast, Confirm } from "../utils";
 import { DangerButton } from "./DangerButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useLocale } from "../contexts/locale";
 
 export const Task: React.FC<TaskFieldsFragment> = ({ id, listId, name, completed }) => {
   const { toggleCompleted, deleteTask } = useTodos();
+  const { currentLocale } = useLocale();
 
   const labelStyle: React.CSSProperties = {
     cursor: "pointer",
@@ -16,8 +17,6 @@ export const Task: React.FC<TaskFieldsFragment> = ({ id, listId, name, completed
   };
 
   if (completed) labelStyle.textDecoration = "line-through";
-
-  const currentLocale = locale[getCurrentLocale()];
 
   const handleCompleted = async () => {
     toggleCompleted(listId, id);
@@ -40,7 +39,7 @@ export const Task: React.FC<TaskFieldsFragment> = ({ id, listId, name, completed
   };
 
   const handleDeleteTask = async () => {
-    const decision = await Confirm().fire({
+    const decision = await Confirm(currentLocale).fire({
       html: currentLocale.swalDeleteTaskConfirm
     });
 

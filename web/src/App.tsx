@@ -1,7 +1,7 @@
 import React from "react";
 import "./style.scss";
 import "./registerIcons";
-import { TodosContext } from "./context";
+import { TodosContext } from "./contexts/todos";
 import { client } from "./graphql/client";
 import { Loading } from "./components/Loading";
 import { LocaleSelector } from "./components/LocaleSelector";
@@ -44,7 +44,7 @@ export class App extends React.Component<{}, State> {
 
     return (
       <>
-        <LocaleSelector forceUpdate={this.forceUpdate.bind(this)} />
+        <LocaleSelector />
         {error ? (
           <Error />
         ) : (

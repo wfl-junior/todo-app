@@ -1,17 +1,16 @@
 import React from "react";
-import { useTodos } from "../context";
-import { locale, getCurrentLocale } from "../locale";
+import { useTodos } from "../contexts/todos";
 import { ListFieldsFragment } from "../graphql";
 import { client } from "../graphql/client";
 import { Toast } from "../utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Form } from "./Form";
 import { List } from "./List";
+import { useLocale } from "../contexts/locale";
 
 export const Lists = () => {
   const { lists, addList } = useTodos();
-
-  const currentLocale = locale[getCurrentLocale()];
+  const { currentLocale } = useLocale();
 
   const handleAddList = async (name: ListFieldsFragment["name"]) => {
     if (!name.length) return;

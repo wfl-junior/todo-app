@@ -1,9 +1,11 @@
 import React from "react";
-import { locale, getCurrentLocale } from "../locale";
+import { useLocale } from "../contexts/locale";
 import { Toast } from "../utils";
 
 export const Error: React.FC = () => {
-  const msg = locale[getCurrentLocale()].errorFetch;
+  const { currentLocale } = useLocale();
+
+  const msg = currentLocale.errorFetch;
 
   Toast.fire({
     icon: "error",

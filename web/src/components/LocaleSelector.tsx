@@ -1,20 +1,15 @@
 import React, { useState } from "react";
-import { getCurrentLocale, supportedLocales, localStorageLocaleKey } from "../locale";
+import { useLocale } from "../contexts/locale";
+import { supportedLocales } from "../contexts/locale/locale";
 import { LocaleSelectorImage } from "./LocaleSelectorImage";
 
-interface LocaleSelectorProps {
-  forceUpdate: React.Component["forceUpdate"];
-}
-
-export const LocaleSelector: React.FC<LocaleSelectorProps> = ({ forceUpdate }) => {
+export const LocaleSelector: React.FC = () => {
   const [open, setOpen] = useState(false);
-
-  const asideClasses = ["locale-selector"];
-  if (open) asideClasses.push("open");
+  const { localeKey, setLocaleKey } = useLocale();
 
   return (
     <aside
-      className={asideClasses.join(" ")}
+      className={`locale-selector ${open ? "open" : ""}`}
       onClick={() => setOpen(!open)}
       aria-expanded={open}
       aria-haspopup="true"
@@ -22,19 +17,13 @@ export const LocaleSelector: React.FC<LocaleSelectorProps> = ({ forceUpdate }) =
       {open ? (
         <ul>
           {supportedLocales.map(lk => (
-            <li
-              key={lk}
-              onClick={() => {
-                localStorage.setItem(localStorageLocaleKey, lk);
-                forceUpdate();
-              }}
-            >
+            <li key={lk} onClick={() => setLocaleKey(lk)}>
               <LocaleSelectorImage localeKey={lk} /> <span>{lk}</span>
             </li>
           ))}
         </ul>
       ) : (
-        <LocaleSelectorImage localeKey={getCurrentLocale()} />
+        <LocaleSelectorImage localeKey={localeKey} />
       )}
     </aside>
   );

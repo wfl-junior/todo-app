@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { capitalize } from "../utils";
-import { locale, getCurrentLocale } from "../locale";
+import { useLocale } from "../contexts/locale";
 
 interface FormProps {
   onSubmit: (value: string) => Promise<void>;
@@ -12,8 +12,7 @@ interface FormProps {
 export const Form: React.FC<FormProps> = ({ onSubmit, ...props }) => {
   const [submitting, setSubmitting] = useState(false);
   const [value, setValue] = useState("");
-
-  const currentLocale = locale[getCurrentLocale()];
+  const { currentLocale } = useLocale();
 
   return (
     <form

@@ -1,5 +1,5 @@
 import Swal from "sweetalert2";
-import { locale, getCurrentLocale } from "./locale";
+import { LocaleMap } from "./contexts/locale/types";
 
 export const capitalize = (str: string) =>
   str.length > 0 ? str[0].toUpperCase() + str.slice(1) : "";
@@ -16,9 +16,7 @@ export const Toast = Swal.mixin({
   }
 });
 
-export const Confirm = () => {
-  const currentLocale = locale[getCurrentLocale()];
-
+export const Confirm = (currentLocale: LocaleMap) => {
   return Swal.mixin({
     title: currentLocale.swalConfirmTitle,
     icon: "warning",
